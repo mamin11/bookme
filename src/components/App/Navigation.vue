@@ -104,6 +104,15 @@
             <admin-dropdown v-if="hasSession && user.role === 'admin'"></admin-dropdown>
 
             <v-list-item
+            :color="$route.name == 'Booking'? 'red' : ''"
+            class="pb-2"
+            to="/booking"
+            >
+            <v-icon>mdi-clock-plus-outline</v-icon>
+            <v-list-item-title class="pl-3">Bookings</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item
             :color="$route.name == 'Quiz'? 'red' : ''"
             class="pb-2"
             to="/quiz"
