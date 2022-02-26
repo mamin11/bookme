@@ -40,8 +40,8 @@
         </v-responsive>
     </div>
 </template>
-
 <script>
+// TODO: add customer search feature - map, filter list
 export default {
     data: () => ({
     items: [

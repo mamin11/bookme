@@ -12,6 +12,9 @@
             ></v-select>
         </v-col>
 
+<!-- TODO: add image icons to user list -->
+<!-- TODO: adopt common neat font -->
+<!-- TODO: disable taken hours -->
         <v-col
             class="d-flex"
             cols="12"
@@ -72,6 +75,14 @@
 
         <v-col
             cols="12"
+            class="border-b-2 border-gray-300"
+        >
+        <label class="text-gray-500 text-sm">Select time</label><br>
+        <input class="w-full outline-none" type="time" :value="time"/>
+        </v-col>
+
+        <!-- <v-col
+            cols="12"
         >
             <v-dialog
             ref="dialog"
@@ -112,7 +123,7 @@
                 </v-btn>
             </v-time-picker>
             </v-dialog>
-        </v-col>
+        </v-col> -->
 
         <v-col
             class="d-flex"
