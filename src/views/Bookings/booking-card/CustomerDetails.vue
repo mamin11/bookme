@@ -74,7 +74,7 @@ export default {
     computed: {
         searchQuery() {
             return this.customers.filter((item) => {
-                return item.full_name.startsWith(this.search)
+                return item.full_name.toLowerCase().startsWith(this.search.toLowerCase())
             })
         }
     },
