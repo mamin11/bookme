@@ -2,37 +2,44 @@
     <div>
         <v-responsive class="overflow-y-auto" max-height="400">
             <v-toolbar dense elevation="0" class="mb-3">
-                <v-text-field hide-details color="black" append-icon="mdi-magnify" single-line label="Search customer"></v-text-field>
+                <v-text-field v-model="search" hide-details color="black" append-icon="mdi-magnify" single-line label="Search customer"></v-text-field>
             </v-toolbar>
 
             <v-list shaped>
                 <v-list-item-group
-                v-model="model"
                 >
-                <template v-for="(item, i) in items">
-                    <v-divider
-                    v-if="!item"
+                
+                <template v-for="(customer, i) in searchQuery">
+                    <v-list-item
+                    v-if="searchQuery != null"
                     :key="`divider-${i}`"
-                    ></v-divider>
+                    :value="searchQuery.full_name"
+                    active-class="orange--text text--accent-4"
+                    @click="setSelected(customer)" 
+                    >
+                        <v-list-item-content>
+                        <v-list-item-title 
+                        v-text="customer.full_name"></v-list-item-title>
+                        </v-list-item-content>
+                        <v-list-item-action>
+                            <v-list-item-action-text>{{customer.email}}</v-list-item-action-text>
+                        </v-list-item-action>
+                    </v-list-item>
 
                     <v-list-item
                     v-else
-                    :key="`item-${i}`"
-                    :value="item"
-                    active-class="orange-dark--text text--accent-4"
+                    :key="customer.id"
+                    :value="customer.full_name"
+                    active-class="orange--text text--accent-4"
+                    @click="setSelected(customer)" 
                     >
-                    <template v-slot:default="{ active }">
                         <v-list-item-content>
-                        <v-list-item-title v-text="item"></v-list-item-title>
+                        <v-list-item-title 
+                        v-text="customer.full_name"></v-list-item-title>
                         </v-list-item-content>
-
                         <v-list-item-action>
-                        <v-checkbox
-                            :input-value="active"
-                            color="orange accent-4"
-                        ></v-checkbox>
+                            <v-list-item-action-text>{{customer.email}}</v-list-item-action-text>
                         </v-list-item-action>
-                    </template>
                     </v-list-item>
                 </template>
                 </v-list-item-group>
@@ -41,29 +48,41 @@
     </div>
 </template>
 <script>
-// TODO: add customer search feature - map, filter list
 export default {
     data: () => ({
-    items: [
-        'Dog Photos',
-        'Cat Photos',
-        'Potatoes',
-        'Carrots',
-        'Dog Photos',
-        'Cat Photos',
-        'Potatoes',
-        'Carrots',
-        'Dog Photos',
-        'Cat Photos',
-        'Potatoes',
-        'Carrots',
-        'Dog Photos',
-        'Cat Photos',
-        'Potatoes',
-        'Carrots',
+    customers: [
+        {
+            id: 1,
+            full_name: "Allan Smith",
+            email: "allansm@email.test"
+        },
+        {
+            id: 2,
+            full_name: "Lee Dixon",
+            email: "mrlee@email.test"
+        },
+        {
+            id: 3,
+            full_name: "Diego Enrique",
+            email: "denriqu1@email.test"
+        }
     ],
-    model: ['Carrots'],
+    model: ['Customers'],
+    selected: null,
+    search: ''
     }),
+    computed: {
+        searchQuery() {
+            return this.customers.filter((item) => {
+                return item.full_name.startsWith(this.search)
+            })
+        }
+    },
+    methods: {
+        setSelected(customer) {
+            this.selected = customer
+        }
+    }
 }
 </script>
 
