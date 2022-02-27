@@ -6,11 +6,14 @@
         >
             <v-select
             :items="services"
-            item-value="services"
+            item-value="item"
+            item-text="title"
             item-color="red"
             label="Select service"
             color="orange lighten-1"
             dense
+            v-model="form.service"
+            return-object
             ></v-select>
         </v-col>
 
@@ -28,6 +31,7 @@
             color="orange lighten-1"
             dense
             v-model="form.staff"
+            return-object
             >
             <template v-slot:selection="{ item }" class="">
                 <span class="text-black" :key="item.id" >{{ item.name }}</span>
@@ -51,7 +55,7 @@
             >
             <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                v-model="date"
+                v-model="form.date"
                 label="Select date"
                 append-icon="mdi-calendar"
                 readonly
@@ -61,7 +65,7 @@
                 ></v-text-field>
             </template>
             <v-date-picker
-                v-model="date"
+                v-model="form.date"
                 scrollable
                 :min="new Date().toISOString().substr(0, 10)"
                 :disabledDates="'2022-02-25'"
@@ -91,7 +95,7 @@
             class="border-b-2 border-gray-300"
         >
         <label class="text-gray-500 text-sm">Select time</label><br>
-        <input class="w-full outline-none" type="time" :value="time"/>
+        <input v-model="form.time" class="w-full outline-none" type="time"/>
         </v-col>
 
         <v-col
@@ -103,6 +107,7 @@
             color="orange lighten-1"
             type="number"
             min="1"
+            v-model="form.duration"
             ></v-text-field>
         </v-col>
     </div>
@@ -113,35 +118,39 @@ export default {
     data() {
         return {
             form: {
-                service: '',
-                staff: '',
-                date: '',
-                time: ''
+                service: {},
+                staff: {},
+                date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+                time: new Date().toLocaleTimeString(),
+                duration: '1'
             },
-            time: new Date().toLocaleTimeString(),
-            date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
             date_modal: false,
             time_modal: false,
             services: [
                 {
-                    text: "Wedding",
-                    value: 100
+                    id: 1,
+                    title: "Wedding",
+                    price: 100
                 },
                 {
-                    text: "Birthday",
-                    value: 150
+                    id: 2,
+                    title: "Birthday",
+                    price: 150
                 },
                 {
-                    text: "Portrait",
-                    value: 50
+                    id: 3,
+                    title: "Portrait",
+                    price: 50
                 },
                 {
-                    text: "Engagement",
-                    value: 200
+                    id: 4,
+                    title: "Engagement",
+                    price: 200
                 },
                 {
-                    text: "Product",
-                    value: 80
+                    id: 5,
+                    title: "Product",
+                    price: 80
                 }
             ],
             staff: [
