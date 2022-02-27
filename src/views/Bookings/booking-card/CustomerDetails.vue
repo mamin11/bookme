@@ -65,6 +65,11 @@ export default {
             id: 3,
             full_name: "Diego Enrique",
             email: "denriqu1@email.test"
+        },
+        {
+            id: 4,
+            full_name: "Amin Abdi",
+            email: "amadbi@email.test"
         }
     ],
     model: ['Customers'],

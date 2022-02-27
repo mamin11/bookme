@@ -6,8 +6,10 @@
         >
             <v-select
             :items="services"
+            item-value="services"
+            item-color="red"
             label="Select service"
-            color="black"
+            color="orange lighten-1"
             dense
             ></v-select>
         </v-col>
@@ -23,7 +25,7 @@
             item-value="id"
             item-color="red"
             label="Select staff"
-            color="black"
+            color="orange lighten-1"
             dense
             v-model="form.staff"
             >

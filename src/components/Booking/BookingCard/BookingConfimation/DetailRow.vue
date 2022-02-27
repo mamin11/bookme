@@ -1,6 +1,6 @@
 <template>
-        <v-row class="flex mx-auto text-sm">
-            <v-col class="text-center">{{title}}: </v-col><v-col class="text-center">{{value}}</v-col>
+        <v-row class="flex mx-auto text-sm w-2/3">
+            <v-col class="text-start">{{title}}: </v-col><v-col class="text-end">{{value}}</v-col>
         </v-row>
 </template>
 
