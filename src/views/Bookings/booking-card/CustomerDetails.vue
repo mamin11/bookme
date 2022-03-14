@@ -70,10 +70,19 @@ export default {
             id: 4,
             full_name: "Amin Abdi",
             email: "amadbi@email.test"
+        },
+        {
+            id: 5,
+            full_name: "This is test",
+            email: "this@this.com"
+        },
+        {
+            id: 6,
+            full_name: "hello there",
+            email: "helloh@email.com"
         }
     ],
     model: ['Customers'],
-    selected: null,
     search: ''
     }),
     computed: {
@@ -81,11 +90,19 @@ export default {
             return this.customers.filter((item) => {
                 return item.full_name.toLowerCase().startsWith(this.search.toLowerCase())
             })
+        },
+        booking_customer: {
+            get() {
+                return this.$store.state.bookingCreateData.customer
+            },
+            set(value) {
+                this.$store.commit('SET_CUSTOMER_IN_BOOKING_DETAILS', value)
+            }
         }
     },
     methods: {
         setSelected(customer) {
-            this.selected = customer
+            this.booking_customer = customer
         }
     }
 }

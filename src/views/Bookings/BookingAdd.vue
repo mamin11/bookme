@@ -42,7 +42,7 @@
 
                 <v-row align="center" class="w-full p-5">
                     <!-- start of windows -->
-                    <v-window class="w-full" v-model="step">
+                    <v-window class="w-full" v-model="step" touchless>
                         <v-window-item :value="1">
                             <booking-details></booking-details>
                         </v-window-item>
