@@ -155,3 +155,34 @@ export const SET_EDITING_USER = (state, data) => {
 export const RESET_EDIING_USER = (state) => {
     state.editingUser = null
 }
+
+// booking
+export const SET_CREATE_BOOKING_DATA = (state, data) => {
+    state.bookingCreateData = data
+}
+
+export const SET_SERVICE_IN_BOOKING_DETAILS = (state, data) => {
+    state.bookingCreateData.bookingDetails.service = data
+}
+
+export const SET_STAFF_IN_BOOKING_DETAILS = (state, data) => {
+    state.bookingCreateData.bookingDetails.staff = data
+}
+
+export const SET_DATE_IN_BOOKING_DETAILS = (state, data) => {
+    state.bookingCreateData.bookingDetails.date = data
+}
+
+export const SET_TIME_IN_BOOKING_DETAILS = (state, data) => {
+    state.bookingCreateData.bookingDetails.time = data
+}
+
+export const SET_DURATION_IN_BOOKING_DETAILS = (state, data) => {
+    let intValue = data !== '' ? parseInt(data) : data
+    if (intValue>=1)
+    state.bookingCreateData.bookingDetails.service.duration = intValue
+}
+
+export const SET_CUSTOMER_IN_BOOKING_DETAILS = (state, data) => {
+    state.bookingCreateData.customer = data
+}

@@ -198,3 +198,32 @@ export const setEditingUser = async ({ commit }, payload) => {
 export const resetEditingUser = async ({ commit }) => {
     commit('RESET_EDIING_USER')
 }
+
+//booking
+export const setCreateBookingData = ({ commit }, payload) => {
+    commit('SET_CREATE_BOOKING_DATA', payload)
+}
+
+export const setServiceInBookingDetails = ({ commit }, payload) => {
+    commit('SET_SERVICE_IN_BOOKING_DETAILS', payload)
+}
+
+export const setStaffInBookingDetails = ({ commit }, payload) => {
+    commit('SET_STAFF_IN_BOOKING_DETAILS', payload)
+}
+
+export const setDateInBookingDetails = ({ commit }, payload) => {
+    commit('SET_DATE_IN_BOOKING_DETAILS', payload)
+}
+
+export const setTimeInBookingDetails = ({ commit }, payload) => {
+    commit('SET_TIME_IN_BOOKING_DETAILS', payload)
+}
+
+export const setDurationInBookingDetails = ({ commit }, payload) => {
+    commit('SET_DURATION_IN_BOOKING_DETAILS', payload)
+}
+
+export const setCustomerInBookingDetails = ({ commit }, payload) => {
+    commit('SET_CUSTOMER_IN_BOOKING_DETAILS', payload)
+}

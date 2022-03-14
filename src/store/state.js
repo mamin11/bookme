@@ -122,4 +122,14 @@ export default {
     users: [],
     editingUser: null,
 
+    bookingCreateData: {
+        bookingDetails: {
+            service: [],
+            staff: {},
+            date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            time: new Date().toLocaleTimeString()
+        },
+        customer: {}
+    },
+
 }

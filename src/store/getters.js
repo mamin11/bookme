@@ -119,3 +119,8 @@ export const getUsers = (state) => {
 export const getEditingUser = (state) => {
     return state.editingUser
 }
+
+export const getCreateBookingData = (state) => {
+    return state.bookingCreateData
+
+}
