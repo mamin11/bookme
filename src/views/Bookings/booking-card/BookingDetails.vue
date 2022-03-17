@@ -100,7 +100,6 @@
                 ></v-text-field>
             </template>
             <v-time-picker
-            ampm-in-title
             format="ampm"
             no-title
             v-model="booking_time"
