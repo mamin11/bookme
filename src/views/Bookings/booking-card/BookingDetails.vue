@@ -73,21 +73,6 @@
                 no-title
                 @update:picker-date="pickerUpdate($event)"
             >
-                <v-spacer></v-spacer>
-                <v-btn
-                text
-                color="red lighten-1"
-                @click="date_modal = false"
-                >
-                Cancel
-                </v-btn>
-                <v-btn
-                text
-                color="red lighten-1"
-                @click="date_modal = false"
-                >
-                OK
-                </v-btn>
             </v-date-picker>
             </v-dialog>
         </v-col>
@@ -121,21 +106,6 @@
             v-model="booking_time"
             color="red lighten-1"
             >
-                <v-spacer></v-spacer>
-                <v-btn
-                text
-                color="red lighten-1"
-                @click="time_modal = false"
-                >
-                Cancel
-                </v-btn>
-                <v-btn
-                text
-                color="red lighten-1"
-                @click="time_modal = false"
-                >
-                OK
-                </v-btn>
             </v-time-picker>
             </v-dialog>
         <!-- <label class="text-gray-500 text-sm">Select time</label><br>
