@@ -1,3 +1,4 @@
+import moment from "moment"
 export default {
     questions: [
         {
@@ -126,8 +127,8 @@ export default {
         bookingDetails: {
             service: [],
             staff: {},
-            date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-            time: new Date().toLocaleTimeString()
+            date: moment().format("YYYY-MM-DD"),
+            time: moment().format("HH:mm")
         },
         customer: {}
     },

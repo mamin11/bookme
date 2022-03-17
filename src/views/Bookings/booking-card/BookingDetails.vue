@@ -67,9 +67,11 @@
             <v-date-picker
                 v-model="booking_date"
                 scrollable
-                :min="new Date().toISOString().substr(0, 10)"
-                :disabledDates="'2022-02-25'"
+                :min="currentDate"
+                :allowed-dates="allowedDates"
                 color="red lighten-1"
+                no-title
+                @update:picker-date="pickerUpdate($event)"
             >
                 <v-spacer></v-spacer>
                 <v-btn
@@ -90,12 +92,54 @@
             </v-dialog>
         </v-col>
 
+<!-- time picker starts here -->
         <v-col
             cols="12"
             class="border-b-2 border-gray-300"
         >
-        <label class="text-gray-500 text-sm">Select time</label><br>
-        <input v-model="booking_time" class="w-full outline-none" type="time"/>
+        <v-dialog
+            ref="dialog"
+            v-model="time_modal"
+            width="290px"
+            color="red lighten-1"
+            >
+            <template v-slot:activator="{ on, attrs2 }">
+                <v-text-field
+                v-model="booking_time"
+                label="Select Time"
+                append-icon="mdi-clock"
+                readonly
+                v-bind="attrs2"
+                v-on="on"
+                color="red lighten-1"
+                ></v-text-field>
+            </template>
+            <v-time-picker
+            ampm-in-title
+            format="ampm"
+            no-title
+            v-model="booking_time"
+            color="red lighten-1"
+            >
+                <v-spacer></v-spacer>
+                <v-btn
+                text
+                color="red lighten-1"
+                @click="time_modal = false"
+                >
+                Cancel
+                </v-btn>
+                <v-btn
+                text
+                color="red lighten-1"
+                @click="time_modal = false"
+                >
+                OK
+                </v-btn>
+            </v-time-picker>
+            </v-dialog>
+        <!-- <label class="text-gray-500 text-sm">Select time</label><br>
+        <input v-model="booking_time" class="w-full outline-none" type="time" /> -->
         </v-col>
 
         <v-col
@@ -136,11 +180,16 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
     data() {
         return {
             date_modal: false,
             time_modal: false,
+            date: moment().format("YYYY-MM-DD"),
+            currentDate: moment().format("YYYY-MM-DD"),
+            availableDates: [],
+            blockDays: [1,4, 6],
             services: [
                 {
                     id: 1,
@@ -198,6 +247,10 @@ export default {
         }
     },
 
+    mounted() {
+        // console.log(this.availableDates);
+    },
+
     computed: {
         booking_service: {
             get() {
@@ -238,6 +291,43 @@ export default {
             set(value) {
                 this.$store.commit('SET_DURATION_IN_BOOKING_DETAILS', value)
             }
+        },
+        // allowedDates: {
+        //     get(value) {
+        //         if (moment(value).day() !== 0)
+        //         availableDates.push(value)
+        //     }
+        // }
+    },
+
+    methods: {
+        allowedDates(a) {
+            return this.availableDates.includes(a);
+        },
+    
+        pickerUpdate: function(val) {
+        let totalDay = moment(val, "YYYY-MM").daysInMonth()
+        // console.log(totalDay)
+        
+        let availableDates = []
+            
+        let monthNow = moment().format('M')
+        let monthSelected = moment(val).format('M')
+        let day
+
+        if(monthNow == monthSelected)
+            day = moment().format('D')
+        else
+            day = 1
+        
+        for (let i = day; i <= totalDay ; i++) {
+            let date = moment().month(val.split('-')[1]-1).date(i).format("YYYY-MM-DD")
+            if (!this.blockDays.includes(moment(date).day()))
+            if (moment(date).day() !== 0 && moment(date).day() !== 6)
+                availableDates.push(date)
+        }
+        this.availableDates = availableDates;
+        this.allowedDates();
         }
     }
 }
