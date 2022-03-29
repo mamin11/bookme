@@ -155,6 +155,16 @@ export default {
             to: "/booking"
         },
         {
+            icon: "mdi-account-group",
+            title: "Team",
+            to: "/team"
+        },
+        {
+            icon: "mdi-account-multiple",
+            title: "Customers",
+            to: "/customers"
+        },
+        {
             icon: "mdi-head-question",
             title: "Questions",
             to: "/quiz"
