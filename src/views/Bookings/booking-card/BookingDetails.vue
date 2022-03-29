@@ -80,35 +80,18 @@
 <!-- time picker starts here -->
         <v-col
             cols="12"
-            class="border-b-2 border-gray-300"
+            class="border-b-2 border-gray-300 mb-6"
         >
-        <v-dialog
-            ref="dialog"
-            v-model="time_modal"
-            width="290px"
-            color="red lighten-1"
-            >
-            <template v-slot:activator="{ on, attrs2 }">
-                <v-text-field
+            <b-field label="Select time" custom-class="is-small has-text-weight-light">
+                <a-time-picker 
+                placeholder="start time" 
+                size="large" 
+                format="HH:mm" 
+                :disabledHours="disabledH" 
+                :disabledMinutes="disabledM"
                 v-model="booking_time"
-                label="Select Time"
-                append-icon="mdi-clock"
-                readonly
-                v-bind="attrs2"
-                v-on="on"
-                color="red lighten-1"
-                ></v-text-field>
-            </template>
-            <v-time-picker
-            format="ampm"
-            no-title
-            v-model="booking_time"
-            color="red lighten-1"
-            >
-            </v-time-picker>
-            </v-dialog>
-        <!-- <label class="text-gray-500 text-sm">Select time</label><br>
-        <input v-model="booking_time" class="w-full outline-none" type="time" /> -->
+                ></a-time-picker>
+            </b-field>
         </v-col>
 
         <v-col
@@ -213,6 +196,8 @@ export default {
                     image: "https://www.gravatar.com/avatar/b17065ea1655f1e3283aac8d8fc16019?s=48&d=identicon&r=PG"
                 }
             ],
+            hourFormat: undefined, // Browser locale
+            locale: undefined // Browser locale
         }
     },
 
@@ -261,6 +246,21 @@ export default {
                 this.$store.commit('SET_DURATION_IN_BOOKING_DETAILS', value)
             }
         },
+        // disabledH() {
+        //     let DISABLED_HOURS= []
+        //     for (let index = 0; index < bookings.length; index++) {
+        //         DISABLED_HOURS.push(moment(bookings[index].start_time).format("HH"))
+
+        //     }
+        //     DISABLED_HOURS = DISABLED_HOURS.join(",")
+
+        //     //change from string array to int array - string array adds unexpected behaviour
+        //     var intArray = DISABLED_HOURS.split(',').map(function(item) {
+        //         return parseInt(item, 10);
+        //     })
+
+        //     return intArray
+        // }
         // allowedDates: {
         //     get(value) {
         //         if (moment(value).day() !== 0)
@@ -297,6 +297,14 @@ export default {
         }
         this.availableDates = availableDates;
         this.allowedDates();
+        },
+
+        disabledH() {
+            let intArray = [12, 13, 15]
+            return intArray
+        },
+        disabledM() {
+            return [45, 30]
         }
     }
 }

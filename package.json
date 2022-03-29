@@ -10,8 +10,10 @@
   "dependencies": {
     "@tiptap/starter-kit": "^2.0.0-beta.82",
     "@tiptap/vue-2": "^2.0.0-beta.39",
+    "ant-design-vue": "^1.7.8",
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
+    "buefy": "^0.9.19",
     "core-js": "^3.6.5",
     "epic-spinners": "^1.1.0",
     "material-design-icons": "^3.0.1",
