@@ -1,7 +1,7 @@
 <template>
 <div class="container ">
     <div class="row h-screen justify-center">
-        <div  class="col-md-4 flex items-center my-auto">
+        <div  class="col-md-6 col-12 flex items-center my-auto">
             <!-- card starts here -->
             <div class="w-full max-w-xl relative mx-auto my-auto rounded-xl shadow-lg bg-white">
                 <div class="flex flex-col bg-gradient-to-r from-red-900 to-yellow-500 opacity-95">
