@@ -39,7 +39,7 @@
             <v-icon>mdi-plus</v-icon>
         </v-btn>
         </template>
-        <span>Invite others</span>
+        <span>Create Booking</span>
         </v-tooltip>
 
         <v-tooltip 
@@ -104,77 +104,14 @@
             <admin-dropdown v-if="hasSession && user.role === 'admin'"></admin-dropdown>
 
             <v-list-item
-            :color="$route.name == 'Booking'? 'red' : ''"
+            v-for="(item, i) in links"
+            :key="i"
             class="pb-2"
-            to="/booking"
+            :to="item.to"
+            :color="$route.name == item.title ? 'red' : ''"
             >
-            <v-icon>mdi-clock-plus-outline</v-icon>
-            <v-list-item-title class="pl-3">Bookings</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item
-            :color="$route.name == 'Quiz'? 'red' : ''"
-            class="pb-2"
-            to="/quiz"
-            >
-            <v-icon>mdi-head-question</v-icon>
-            <v-list-item-title class="pl-3">Questions</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item
-            color="red"
-            class="pb-2"
-            to="/papers"
-            >
-                <v-icon>mdi-note-search</v-icon>
-                <v-list-item-title class="pl-3">Past papers</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item
-            class="pb-2"
-            >
-            <v-icon>mdi-map-search</v-icon>
-            <v-list-item-title class="pl-3">Find a tutor</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item
-            class="pb-2"
-            to="/notes"
-            >
-            <v-icon md>mdi-note-plus</v-icon>
-            <v-list-item-title class="pl-3">Notes</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item
-            class="pb-2"
-            >
-            <v-icon>mdi-account-group</v-icon>
-            <v-list-item-title class="pl-3">My Bubble</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item
-            class="pb-2"
-            >
-            <v-icon>mdi-chart-box</v-icon>
-            <v-list-item-title class="pl-3">Statistics</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item
-            color="red"
-            class="pb-2"
-            to="/forum"
-            >
-            <v-icon>mdi-forum</v-icon>
-            <v-list-item-title class="pl-3">Forum</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item
-            color="red"
-            class="pb-2"
-            to="/my-account"
-            >
-            <v-icon>mdi-account</v-icon>
-            <v-list-item-title class="pl-3">My Profile</v-list-item-title>
+                <v-icon>{{item.icon}}</v-icon>
+                <v-list-item-title class="pl-3">{{item.title}}</v-list-item-title>
             </v-list-item>
 
             <v-list-item
@@ -211,6 +148,38 @@ export default {
     user: null,
     token: null,
     hasSession: false,
+    links: [
+        {
+            icon: "mdi-clock-plus-outline",
+            title: "Bookings",
+            to: "/booking"
+        },
+        {
+            icon: "mdi-head-question",
+            title: "Questions",
+            to: "/quiz"
+        },
+        {
+            icon: "mdi-note-search",
+            title: "Past Papers",
+            to: "/papers"
+        },
+        {
+            icon: "mdi-map-search",
+            title: "Find tutor",
+            to: ""
+        },
+        {
+            icon: "mdi-chart-box",
+            title: "Statistics",
+            to: ""
+        },
+        {
+            icon: "mdi-account",
+            title: "Profile",
+            to: "/my-account"
+        },
+    ]
     }),
 
     watch: {
