@@ -128,7 +128,7 @@ export default {
             service: [],
             staff: {},
             date: moment().format("YYYY-MM-DD"),
-            time: null
+            time: []
         },
         customer: {}
     },

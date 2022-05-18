@@ -31,8 +31,7 @@ export default {
         },
         price: {
             get() {
-                // let total = this.$store.state.bookingCreateData.bookingDetails.service.reduce((n, {price}) => n+price, 0) 
-                let total = this.$store.state.bookingCreateData.bookingDetails.service.price * this.$store.state.bookingCreateData.bookingDetails.service.duration
+                let total = this.$store.state.bookingCreateData.bookingDetails.service.price * this.duration
                 if (isNaN(total)) {
                     return 'Not available'
                 }
@@ -58,8 +57,9 @@ export default {
             }
         },
         duration: {
+            // difference between min and max
             get() {
-                return this.$store.state.bookingCreateData.bookingDetails.service.duration
+                return moment(this.date+' '+this.end_time).format('HH') - moment(this.date+' '+this.start_time).format('HH')
             }
         },
         date: {
@@ -68,14 +68,17 @@ export default {
             }
         },
         start_time: {
+            // min in array
             get() { 
-                let start = this.$store.state.bookingCreateData.bookingDetails.time
-                return moment(this.date+' '+start).format('HH:mm')
+                let time = this.$store.state.bookingCreateData.bookingDetails.time
+                return time.reduce(function(a, b) { return a <= b? a : b;});
             }
         },
         end_time: {
+            // max in array
             get() {
-                return moment(this.date+' '+this.start_time).add(this.duration, 'hours').format('HH:mm')
+                let time = this.$store.state.bookingCreateData.bookingDetails.time
+                return time.reduce(function(a, b) { return a <= b? b : a;});
             }
         }
     }

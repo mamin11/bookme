@@ -82,52 +82,31 @@
             cols="12"
             class="border-b-2 border-gray-300 mb-6"
         >
-            <b-field label="Select time" custom-class="is-small has-text-weight-light">
-                <a-time-picker 
-                placeholder="start time" 
-                size="large" 
-                format="HH:mm" 
-                :disabledHours="disabledH" 
-                :disabledMinutes="disabledM"
+            <v-combobox
                 v-model="booking_time"
-                ></a-time-picker>
-            </b-field>
-        </v-col>
-
-        <v-col
-            class="d-flex"
-            cols="12"
-            v-if="booking_service.length !== 0"
-        >
-                <v-text-field
-                label="Select duration (hours)"
-                color="orange lighten-1"
-                type="number"
-                v-model="booking_duration"
-                min="1"
-                ></v-text-field>
-        </v-col>
-        <v-col
-            class="d-flex"
-            cols="12"
-            v-else
-        >
-        </v-col>
-
-<!-- plan to use if multiple services can be selected, each service will have its own duration selector -->
-        <!-- <v-expansion-panels >
-            <v-expansion-panel
-            v-for="(item,i) of booking_service"
-            :key="i"
-            v-model="booking_service"
-            return-object
+                :items="items"
+                chips
+                color="orange"
+                clearable
+                label="Select start and end time"
+                multiple
+                append-icon="mdi-clock"
             >
-            <v-expansion-panel-header>{{booking_service[i].title}}</v-expansion-panel-header>
-            <v-expansion-panel-content>
-            </v-expansion-panel-content>
-            </v-expansion-panel>
-        </v-expansion-panels> -->
-
+                <template v-slot:selection="{ attrs, item, select, selected }">
+                <v-chip
+                    v-bind="attrs"
+                    :input-value="selected"
+                    close
+                    color="red"
+                    text-color="white"
+                    @click="select"
+                    @click:close="remove(item)"
+                >
+                    <strong class="text-white font-thin text-sm">{{ item }}</strong>&nbsp;
+                </v-chip>
+                </template>
+            </v-combobox>
+        </v-col>
     </div>
 </template>
 
@@ -196,13 +175,13 @@ export default {
                     image: "https://www.gravatar.com/avatar/b17065ea1655f1e3283aac8d8fc16019?s=48&d=identicon&r=PG"
                 }
             ],
-            hourFormat: undefined, // Browser locale
-            locale: undefined // Browser locale
+            hourFormat: undefined, 
+            locale: undefined, 
+            items: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
         }
     },
 
     mounted() {
-        // console.log(this.availableDates);
     },
 
     computed: {
@@ -246,27 +225,6 @@ export default {
                 this.$store.commit('SET_DURATION_IN_BOOKING_DETAILS', value)
             }
         },
-        // disabledH() {
-        //     let DISABLED_HOURS= []
-        //     for (let index = 0; index < bookings.length; index++) {
-        //         DISABLED_HOURS.push(moment(bookings[index].start_time).format("HH"))
-
-        //     }
-        //     DISABLED_HOURS = DISABLED_HOURS.join(",")
-
-        //     //change from string array to int array - string array adds unexpected behaviour
-        //     var intArray = DISABLED_HOURS.split(',').map(function(item) {
-        //         return parseInt(item, 10);
-        //     })
-
-        //     return intArray
-        // }
-        // allowedDates: {
-        //     get(value) {
-        //         if (moment(value).day() !== 0)
-        //         availableDates.push(value)
-        //     }
-        // }
     },
 
     methods: {
@@ -276,7 +234,6 @@ export default {
     
         pickerUpdate: function(val) {
         let totalDay = moment(val, "YYYY-MM").daysInMonth()
-        // console.log(totalDay)
         
         let availableDates = []
             
@@ -305,7 +262,11 @@ export default {
         },
         disabledM() {
             return [45, 30]
-        }
+        },
+        remove (item) {
+            this.chips.splice(this.chips.indexOf(item), 1)
+            this.chips = [...this.chips]
+        },
     }
 }
 </script>
