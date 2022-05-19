@@ -2,6 +2,7 @@
 <div>
     <v-app-bar
         :hidden="hideNav"
+        dense
         color="gray accent-4"
         
     >
