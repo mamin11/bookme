@@ -59,6 +59,9 @@ export default {
         duration: {
             // difference between min and max
             get() {
+                if (this.end_time === '' || this.start_time.length === '') {
+                    return  ''
+                }
                 return moment(this.date+' '+this.end_time).format('HH') - moment(this.date+' '+this.start_time).format('HH')
             }
         },
@@ -71,6 +74,9 @@ export default {
             // min in array
             get() { 
                 let time = this.$store.state.bookingCreateData.bookingDetails.time
+                if (time === undefined || time.length == 0) {
+                    return ''
+                }
                 return time.reduce(function(a, b) { return a <= b? a : b;});
             }
         },
@@ -78,6 +84,9 @@ export default {
             // max in array
             get() {
                 let time = this.$store.state.bookingCreateData.bookingDetails.time
+                if (time === undefined || time.length == 0) {
+                    return ''
+                }
                 return time.reduce(function(a, b) { return a <= b? b : a;});
             }
         }

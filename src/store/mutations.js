@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import moment from "moment"
 
 export const SET_QUESTIONS = (state, questions) => {
     state.questions = questions
@@ -185,4 +186,16 @@ export const SET_DURATION_IN_BOOKING_DETAILS = (state, data) => {
 
 export const SET_CUSTOMER_IN_BOOKING_DETAILS = (state, data) => {
     state.bookingCreateData.customer = data
+}
+
+export const RESTART_BOOKING = (state) => {
+    state.bookingCreateData = {
+        bookingDetails: {
+            service: [],
+            staff: {},
+            date: moment().format("YYYY-MM-DD"),
+            time: []
+        },
+        customer: {}
+    }
 }

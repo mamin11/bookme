@@ -4,6 +4,28 @@
         <div  class="col-md-6 col-12 flex items-center my-auto">
             <!-- card starts here -->
             <div class="w-full max-w-xl relative mx-auto my-auto rounded-xl shadow-lg bg-white">
+                <div class="bg-gradient-to-r from-red-900 to-yellow-500 opacity-95">
+                    <v-col
+                        cols="12"
+                        class="flex justify-end"
+                    >
+                        <v-tooltip bottom color="">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                            large
+                            icon
+                            color="white"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="restartBooking"
+                            >
+                            <v-icon>mdi-cached</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Restart booking</span>
+                        </v-tooltip>
+                    </v-col>
+                </div>
                 <div class="flex flex-col bg-gradient-to-r from-red-900 to-yellow-500 opacity-95">
                     <div class="h-40 m-5 flex">
                         <h1 class="text-center text-2xl p-5 text-white my-auto mx-auto">Create a Booking</h1>
@@ -80,13 +102,6 @@ export default {
         }
     },
     computed: {
-        // date() {
-        //     const t = new Date();
-        //     const date = ('0' + t.getDate()).slice(-2);
-        //     const month = ('0' + (t.getMonth() + 1)).slice(-2);
-        //     const year = t.getFullYear();
-        //     return `${date}/${month}/${year}`;
-        // }
     },
     methods: {
         selectBookingWindow() {
@@ -103,6 +118,9 @@ export default {
             this.step = 3
             this.progressTracker = 100
             this.activeLink = 3
+        },
+        restartBooking() {
+            this.$store.dispatch('restartBooking')
         }
     }
 }

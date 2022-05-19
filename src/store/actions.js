@@ -227,3 +227,7 @@ export const setDurationInBookingDetails = ({ commit }, payload) => {
 export const setCustomerInBookingDetails = ({ commit }, payload) => {
     commit('SET_CUSTOMER_IN_BOOKING_DETAILS', payload)
 }
+
+export const restartBooking = ({ commit }) => {
+    commit('RESTART_BOOKING')
+}
