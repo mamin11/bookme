@@ -15,32 +15,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "booking" */'../views/Bookings/BookingAdd.vue')
   },
   {
-    path: '/quiz',
-    name: 'Quiz',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Quiz.vue')
-  },
-  {
-    path: '/papers',
-    name: 'Papers',
-    component: () => import(/* webpackChunkName: "papers" */ '../views/Papers/Papers.vue')
-  },
-  {
-    path: '/papers/view',
-    name: 'View Paper',
-    component: () => import(/* webpackChunkName: "papers" */ '../views/Papers/ViewOne.vue')
-  },
-  {
     path: '/team',
     name: 'Team',
     component: () => import(/* webpackChunkName: "team" */ '../views/Team/Team.vue')
-  },
-  {
-    path: '/forum/:id',
-    name: 'Single Forum',
-    component: () => import(/* webpackChunkName: "forumOne" */ '../views/Forum/ForumItem.vue')
   },
   {
     path: '/my-account',
@@ -101,15 +78,6 @@ const routes = [
     meta: {
       requiresAuth: true,
       is_admin : true
-    }
-  },
-  {
-    path: '/notes',
-    name: 'Notes',
-    component: () => import(/* webpackChunkName: "notes" */ '../views/Pages/Notes/Notes.vue'),
-    
-    meta: {
-      requiresAuth: true,
     }
   },
   {

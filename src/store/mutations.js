@@ -1,52 +1,8 @@
 import Vue from 'vue';
 import moment from "moment"
 
-export const SET_QUESTIONS = (state, questions) => {
-    state.questions = questions
-}
-
-export const SET_TOTAL_MARKS_SCORED = (state, data) => {
-    state.totalMarksScored = data
-}
-
-export const ADD_ANSWER_TO_ANSWERSHEET = (state, data) => {
-    state.answerSheet.push({question: data.question, answer: data.answer})
-}
-
-export const SET_NEXT_QUESTION = (state) => {
-    state.questionIndex++
-}
-
-export const SET_PREVIOUS_QUESTION = (state) => {
-    state.questionIndex--
-}
-
-export const SET_QUESTION_INDEX = (state, data) => {
-    state.questionIndex = data
-}
-
 export const SET_LAYOUT_STATE = (state) => {
     state.layoutState = !state.layoutState
-}
-
-export const ADD_TO_FORUM = (state, data) => {
-    state.forumDiscussion.push(data)
-}
-
-export const FORUM_UPVOTE = (state, id) => {
-    state.forumDiscussion.map((item) => {
-        if(item.id === id) {
-            item.votes++
-        }
-    })
-}
-
-export const FORUM_DOWNVOTE = (state, id) => {
-    state.forumDiscussion.map((item) => {
-        if(item.id === id) {
-            item.votes--
-        }
-    })
 }
 
 export const SET_HIDENAV_STATUS = (state, data) => {
@@ -126,22 +82,6 @@ export const CLEAR_PASSWORD_RESET_ERRORS = (state) => {
 
 export const CLEAR_PASSWORD_RESET_RESPONSE = (state) => {
     state.resetPasswordResponse = null
-}
-
-export const SET_PAPERS = (state, data) => {
-    state.papers = data
-}
-
-export const SET_PAPERS_YEARS = (state, data) => {
-    state.papers_years = data
-}
-
-export const SET_PAPERS_SUBJECTS = (state, data) => {
-    state.papers_subjects = data
-}
-
-export const SET_SELECTED_PAPER = (state, data) => {
-    state.selected_paper = data
 }
 
 //admin - manage users

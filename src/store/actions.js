@@ -1,40 +1,8 @@
 import axios from 'axios'
 // import Vue from 'vue'
 
-export const setTotalMarksScored = ({ commit}, payload) => {
-    commit('SET_TOTAL_MARKS_SCORED', payload)
-}
-
-export const addToAnswersheet = ({ commit}, payload) => {
-    commit('ADD_ANSWER_TO_ANSWERSHEET', payload)
-}
-
-export const setNextQuestion = ({ commit }) => {
-    commit('SET_NEXT_QUESTION')
-}
-
-export const setPreviousQuestion = ({ commit }) => {
-    commit('SET_PREVIOUS_QUESTION')
-}
-
-export const setQuestionIndex = ({ commit }, payload) => {
-    commit('SET_QUESTION_INDEX', payload)
-}
-
 export const setLayoutState = ({ commit }) => {
     commit('SET_LAYOUT_STATE')
-}
-
-export const addForumDiscussion = ({ commit }, payload) => {
-    commit('ADD_TO_FORUM', payload)
-}
-
-export const forumDiscussionUpvote = ({ commit }, id) => {
-    commit('FORUM_UPVOTE', id)
-}
-
-export const forumDiscussionDownvote = ({ commit }, id) => {
-    commit('FORUM_DOWNVOTE', id)
 }
 
 export const setHideNav = ({ commit }, payload) => {
@@ -129,50 +97,6 @@ export const clearPasswordResetErrors = ({ commit }) => {
 
 export const clearPasswordResetResponse = ({ commit }) => {
     commit('CLEAR_PASSWORD_FORGOT_RESPONSE')
-}
-
-//papers
-export const getPapers = async ({ commit }, payload) => {
-    try {
-        const response = await axios.get(process.env.VUE_APP_API_URL + '/papers/show', payload, {
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        })
-        commit('SET_PAPERS', response.data.papers)
-    } catch (error) {
-        console.log(error.response.data);
-    }
-}
-
-export const getPaperYears = async ({ commit }, payload) => {
-    try {
-        const response = await axios.get(process.env.VUE_APP_API_URL + '/papers/years', payload, {
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        })
-        commit('SET_PAPERS_YEARS', response.data.years)
-    } catch (error) {
-        console.log(error.response.data);
-    }
-}
-
-export const getPaperSubjects = async ({ commit }, payload) => {
-    try {
-        const response = await axios.get(process.env.VUE_APP_API_URL + '/papers/subjects', payload, {
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        })
-        commit('SET_PAPERS_SUBJECTS', response.data.subjects)
-    } catch (error) {
-        console.log(error.response.data);
-    }
-}
-
-export const setSelectedPaper = async ({ commit }, payload) => {
-    commit('SET_SELECTED_PAPER', payload)
 }
 
 //admin - manage users
