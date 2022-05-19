@@ -74,7 +74,7 @@
                     </v-window-item>
 
                     <v-window-item :value="3">
-                        <booking-confirmation></booking-confirmation>
+                        <booking-confirmation @resetFormStep="resetFormStep"></booking-confirmation>
                     </v-window-item>
                     </v-window>
                     <!-- end of windows -->
@@ -84,21 +84,28 @@
             <!-- card ends here -->
             
         </div>
+
+        <snack-bar :snackbar="snackbar" :text="text" :colour="colour" ></snack-bar>
+
     </div>
 </div>
 </template>
 
 <script>
+import SnackBar from '../../components/Booking/BookingCard/BookingConfimation/SnackBar.vue'
 import BookingConfirmation from './booking-card/BookingConfirmation.vue'
 import BookingDetails from './booking-card/BookingDetails.vue'
 import CustomerDetails from './booking-card/CustomerDetails.vue'
 export default {
-  components: { BookingDetails, CustomerDetails, BookingConfirmation },
+    components: { BookingDetails, CustomerDetails, BookingConfirmation, SnackBar},
     data() {
             return {
             step: 1,
             progressTracker: 33,
             activeLink: 1,
+            snackbar: false,
+            text: '',
+            colour: ''
         }
     },
     computed: {
@@ -121,6 +128,16 @@ export default {
         },
         restartBooking() {
             this.$store.dispatch('restartBooking')
+        },
+        resetFormStep() {
+            this.step = 1
+            this.progressTracker = 33
+            this.activeLink = 1
+
+            //show snackbar
+            this.snackbar = true
+            this.text = 'Successfully created booking'
+            this.colour = 'green'
         }
     }
 }

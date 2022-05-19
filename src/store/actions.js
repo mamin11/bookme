@@ -155,3 +155,21 @@ export const setCustomerInBookingDetails = ({ commit }, payload) => {
 export const restartBooking = ({ commit }) => {
     commit('RESTART_BOOKING')
 }
+
+export const saveBooking = ({ commit }, payload) => {
+    // try {
+    //     // get token from cookies
+
+    //     const response = await axios.post(process.env.VUE_APP_API_URL + '/bookings/add', {
+    //         headers: {
+    //             "Content-Type": "multipart/form-data",
+    //             "Authorization": `Bearer ${token}`,
+    //         }
+    //     })
+
+    //     commit('SAVE_BOOKINGS', response.data.booking)
+    // } catch (error) {
+    //     console.log(error.response.data);
+    // }
+    commit('SAVE_BOOKING', payload)
+}

@@ -139,3 +139,7 @@ export const RESTART_BOOKING = (state) => {
         customer: {}
     }
 }
+
+export const SAVE_BOOKING = (state, data) => {
+    state.bookings = data
+}

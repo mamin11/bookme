@@ -16,13 +16,10 @@ export default {
     resetPasswordResponse: null,
     resetPasswordErrors: null,
 
-    papers: [],
-    selected_paper: null,
-    papers_subjects: [],
-    papers_years: [],
-
     users: [],
     editingUser: null,
+
+    bookings: [],
 
     bookingCreateData: {
         bookingDetails: {
