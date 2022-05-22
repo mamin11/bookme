@@ -84,11 +84,11 @@
         >
             <v-combobox
                 v-model="booking_time"
-                :items="items"
+                :items="available_hours"
                 chips
                 color="orange"
                 clearable
-                label="Select start and end time"
+                label="Select start and end time. (You can select multiple)"
                 multiple
                 append-icon="mdi-clock"
             >
@@ -177,7 +177,7 @@ export default {
             ],
             hourFormat: undefined, 
             locale: undefined, 
-            items: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+            workingHours: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00']
         }
     },
 
@@ -225,6 +225,30 @@ export default {
                 this.$store.commit('SET_DURATION_IN_BOOKING_DETAILS', value)
             }
         },
+        booked_hours: {
+            get() {
+                // list of start and end times for bookings of the day 
+                let day_booked = [
+                    {start: '13:00', end: '14:00'}, 
+                    {start: '15:00', end: '16:00'}
+                ]
+                // ['13:00 - 14:00', '15:00 - 16:00']
+                let day_booked_concat = day_booked.map(item => {
+                    return item.start+' - '+item.end
+                })
+
+                return day_booked_concat
+            }
+        },
+        available_hours: {
+            get() {
+                // create available_hours from working hours ['12:00 - 13:00', '13:00 - 14:00', '15:00 - 16:00', '16:00 - 17:00']
+                let working_hours_concat = this.getConcatedWorkingHours(this.workingHours);
+                // get booked_hours = this.booked_hours (['13:00 - 14:00', '15:00 - 16:00'])
+                // get difference
+                return working_hours_concat.filter(arr => !this.booked_hours.includes(arr))
+            }
+        },
     },
 
     methods: {
@@ -267,6 +291,14 @@ export default {
             this.chips.splice(this.chips.indexOf(item), 1)
             this.chips = [...this.chips]
         },
+        getConcatedWorkingHours(working_hours) {
+            let arr = []
+            for (let i = 0; i < working_hours.length - 1; i++) {
+                const concat = working_hours[i] + ' - '+ working_hours[i+1];
+                arr.push(concat)
+            }
+            return arr
+        }
     }
 }
 </script>
