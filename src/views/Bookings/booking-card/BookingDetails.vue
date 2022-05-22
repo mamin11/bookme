@@ -6,19 +6,26 @@
         >
             <v-select
             :items="services"
-            item-value="item"
-            item-text="title"
+            item-value="id"
             item-color="red"
             label="Select service"
             color="orange lighten-1"
             dense
             v-model="booking_service"
             return-object
-            ></v-select>
+            >
+            <template v-slot:selection="{ item }" class="">
+                <span class="text-black" :key="item.id" >{{ item.title }}</span>
+            </template>
+            <template v-slot:item="{ item }" class="">
+                <span class="text-black text-sm" :key="item.id">{{ item.title }}</span>
+                <v-spacer></v-spacer>
+                <span class="text-black text-sm">£{{ item.price }}/hr</span>
+            </template>
+            </v-select>
         </v-col>
 
-<!-- TODO: adopt common neat font -->
-<!-- TODO: disable taken hours -->
+<!-- TODO: [BV-18] adopt common neat font -->
         <v-col
             class="d-flex"
             cols="12"
