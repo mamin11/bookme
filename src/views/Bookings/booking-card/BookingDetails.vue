@@ -4,6 +4,7 @@
             class="d-flex"
             cols="12"
         >
+        <!-- TODO: [BV-19] create reusable component for service dropdown -->
             <v-select
             :items="services"
             item-value="id"
@@ -231,6 +232,7 @@ export default {
                 // arr.length+1 at end here is because slice doesn't return 
                 // last item inclusive
                 let auto_select = this.available_hours.slice(indexes[0], indexes[indexes.length-1]+1)
+                this.$store.commit('SET_TIME_IN_BOOKING_DETAILS', auto_select)
 
                 return auto_select
             },

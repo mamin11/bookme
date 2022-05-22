@@ -17,7 +17,7 @@
 
 <script>
 import DetailRow from '../../../components/Booking/BookingCard/BookingConfimation/DetailRow.vue'
-import moment from 'moment'
+// import moment from 'moment'
 // import { mapGetters } from 'vuex'
 export default {
   components: { DetailRow },
@@ -45,7 +45,7 @@ export default {
                 if (isNaN(total)) {
                     return 'Not available'
                 }
-                return total.toString()
+                return '£'+total.toString()
             }
         },
         staff: {
@@ -72,7 +72,8 @@ export default {
                 if (this.end_time === '' || this.start_time.length === '') {
                     return  ''
                 }
-                return moment(this.date+' '+this.end_time).format('HH') - moment(this.date+' '+this.start_time).format('HH')
+                // return moment(this.date+' '+this.end_time).format('HH') - moment(this.date+' '+this.start_time).format('HH')
+                return this.$store.state.bookingCreateData.bookingDetails.time.length
             }
         },
         date: {
@@ -87,7 +88,7 @@ export default {
                 if (time === undefined || time.length == 0) {
                     return ''
                 }
-                return time.reduce(function(a, b) { return a <= b? a : b;});
+                return time.reduce(function(a, b) { return a <= b? a : b;}).split(' - ')[0];
             }
         },
         end_time: {
@@ -97,7 +98,7 @@ export default {
                 if (time === undefined || time.length == 0) {
                     return ''
                 }
-                return time.reduce(function(a, b) { return a <= b? b : a;});
+                return time.reduce(function(a, b) { return a <= b? b : a;}).split(' - ')[1];
             }
         }
     },
