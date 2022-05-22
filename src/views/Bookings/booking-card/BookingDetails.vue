@@ -211,7 +211,21 @@ export default {
         },
         booking_time: {
             get() {
-                return this.$store.state.bookingCreateData.bookingDetails.time
+                let time_in_store = this.$store.state.bookingCreateData.bookingDetails.time
+
+                // map to get list of indexes for the 
+                // selected slots in arr of available times
+                let indexes = time_in_store.map(item => {
+                    return this.available_hours.indexOf(item)
+                }).sort()
+
+                // use list of indexes to get all selected items
+                // ie the ones in between first and last selected slots
+                // arr.length+1 at end here is because slice doesn't return 
+                // last item inclusive
+                let auto_select = this.available_hours.slice(indexes[0], indexes[indexes.length-1]+1)
+
+                return auto_select
             },
             set(value) {
                 this.$store.commit('SET_TIME_IN_BOOKING_DETAILS', value)
