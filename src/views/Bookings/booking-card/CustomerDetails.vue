@@ -7,6 +7,7 @@
 
             <v-list shaped>
                 <v-list-item-group
+                v-model="booking_customer"
                 >
                 
                 <template v-for="(customer, i) in searchQuery">
