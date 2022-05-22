@@ -115,8 +115,7 @@ export default {
                 staff_id: this.$store.state.bookingCreateData.bookingDetails.staff.id,
                 service_id: this.$store.state.bookingCreateData.bookingDetails.service.id,
                 date: this.$store.state.bookingCreateData.bookingDetails.date,
-                start_time: this.start_time,
-                end_time: this.end_time,
+                times: this.$store.state.bookingCreateData.bookingDetails.time,
                 duration: this.duration
             }
 

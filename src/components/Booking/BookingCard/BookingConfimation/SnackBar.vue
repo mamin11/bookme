@@ -1,12 +1,12 @@
 <template>
-    <v-snackbar v-model="snackbar" :color="colour">
+    <v-snackbar v-model="showSnackbar" :color="colour">
         {{ text }}
 
         <template v-slot:action="{ attrs }">
             <v-btn
             text
             v-bind="attrs"
-            @click="snackbar = false"
+            @click="showSnackbar = false"
             >
             Close
             </v-btn>
@@ -20,6 +20,19 @@ export default {
         snackbar: Boolean,
         text: String,
         colour: String
+    },
+    data() {
+        return {
+        }
+    },
+    computed: {
+        showSnackbar: {
+            get() {
+                return this.snackbar
+            },
+            set() {
+            }
+        }
     }
 
 }
