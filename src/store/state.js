@@ -26,7 +26,8 @@ export default {
             service: [],
             staff: {},
             date: moment().format("YYYY-MM-DD"),
-            time: []
+            time: [],
+            notifyCustomer: false,
         },
         customer: {}
     },

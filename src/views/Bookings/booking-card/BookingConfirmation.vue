@@ -7,9 +7,12 @@
         <detail-row :title="'Date'" :value="date" />
         <detail-row :title="'Start time'" :value="start_time" />
         <detail-row :title="'End time'" :value="end_time" />
-        <v-row justify="center" class="p-5 flex flex-col">
-            <v-col cols="3" class="mx-auto">
-                <v-btn class="mx-auto mb-4" :loading="loading" block rounded dark color="red" @click="submitForm">Submit</v-btn>
+        <v-row justify="center" class="p-5 flex flex-row">
+            <v-col cols="6" justify-center class="mx-auto justify-center text-center">
+                <v-checkbox v-model="notifyCustomer" :value="notifyCustomer" light label="Notify customer" color="orange"></v-checkbox>
+            </v-col>
+            <v-col cols="6" class="mx-auto my-3">
+                <v-btn class="mx-auto mb-4" :loading="loading" block rounded dark large color="red" @click="submitForm">Submit</v-btn>
             </v-col>
         </v-row>
     </div>
@@ -66,6 +69,14 @@ export default {
                 return customer
             }
         },
+        notifyCustomer: {
+            get() {
+                return this.$store.state.bookingCreateData.bookingDetails.notifyCustomer
+            },
+            set(value) {
+                this.$store.commit('SET_NOTIFY_CUSTOMER_IN_BOOKING_DETAILS', value)
+            }
+        },
         duration: {
             // difference between min and max
             get() {
@@ -116,7 +127,8 @@ export default {
                 service_id: this.$store.state.bookingCreateData.bookingDetails.service.id,
                 date: this.$store.state.bookingCreateData.bookingDetails.date,
                 times: this.$store.state.bookingCreateData.bookingDetails.time,
-                duration: this.duration
+                duration: this.duration,
+                notifyCustomer: this.notifyCustomer
             }
 
             await this.$store.dispatch('saveBooking', bookingFormData)

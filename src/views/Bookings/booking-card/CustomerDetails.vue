@@ -5,7 +5,6 @@
                 <v-text-field v-model="search" hide-details color="black" append-icon="mdi-magnify" single-line label="Search customer"></v-text-field>
             </v-toolbar>
 
-<!-- TODO: [BV-20] fix booking customer setting index instead of object -->
             <v-list shaped>
                 <v-list-item-group
                 v-model="booking_customer"

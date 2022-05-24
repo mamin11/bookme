@@ -134,7 +134,8 @@ export const RESTART_BOOKING = (state) => {
             service: [],
             staff: {},
             date: moment().format("YYYY-MM-DD"),
-            time: []
+            time: [],
+            notifyCustomer: false
         },
         customer: {}
     }
@@ -142,4 +143,8 @@ export const RESTART_BOOKING = (state) => {
 
 export const SAVE_BOOKING = (state, data) => {
     state.bookings = data
+}
+
+export const SET_NOTIFY_CUSTOMER_IN_BOOKING_DETAILS = (state, data) => {
+    state.bookingCreateData.bookingDetails.notifyCustomer = data
 }
