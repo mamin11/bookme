@@ -5,6 +5,7 @@
                 <v-text-field v-model="search" hide-details color="black" append-icon="mdi-magnify" single-line label="Search customer"></v-text-field>
             </v-toolbar>
 
+<!-- TODO: [BV-20] fix booking customer setting index instead of object -->
             <v-list shaped>
                 <v-list-item-group
                 v-model="booking_customer"
@@ -14,9 +15,8 @@
                     <v-list-item
                     v-if="searchQuery != null"
                     :key="`divider-${i}`"
-                    :value="searchQuery.full_name"
+                    :value="searchQuery[i]"
                     active-class="orange--text text--accent-4"
-                    @click="setSelected(customer)" 
                     >
                         <v-list-item-content>
                         <v-list-item-title 
@@ -27,12 +27,12 @@
                         </v-list-item-action>
                     </v-list-item>
 
+<!-- this else may not be needed -->
                     <v-list-item
                     v-else
                     :key="customer.id"
-                    :value="customer.full_name"
+                    :value="customer"
                     active-class="orange--text text--accent-4"
-                    @click="setSelected(customer)" 
                     >
                         <v-list-item-content>
                         <v-list-item-title 
