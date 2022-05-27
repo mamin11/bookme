@@ -148,3 +148,7 @@ export const SAVE_BOOKING = (state, data) => {
 export const SET_NOTIFY_CUSTOMER_IN_BOOKING_DETAILS = (state, data) => {
     state.bookingCreateData.bookingDetails.notifyCustomer = data
 }
+
+export const SET_BOOKING_SUBMIT_DISABLED = (state, data) => {
+    state.bookingCreateData.disabled = data
+}

@@ -61,3 +61,8 @@ export const getCreateBookingData = (state) => {
     return state.bookingCreateData
 
 }
+
+//booking
+export const getBookingSubmitIsDisabled = (state) => {
+    return state.bookingCreateData.disabled
+}

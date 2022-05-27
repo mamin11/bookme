@@ -29,7 +29,8 @@ export default {
             time: [],
             notifyCustomer: false,
         },
-        customer: {}
+        customer: {},
+        disabled: true
     },
 
 }

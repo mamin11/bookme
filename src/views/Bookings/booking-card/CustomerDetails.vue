@@ -96,7 +96,11 @@ export default {
                 return this.$store.state.bookingCreateData.customer
             },
             set(value) {
-                this.$store.commit('SET_CUSTOMER_IN_BOOKING_DETAILS', value)
+                if(value == undefined) {
+                    this.$store.commit('SET_CUSTOMER_IN_BOOKING_DETAILS', {})
+                } else {
+                    this.$store.commit('SET_CUSTOMER_IN_BOOKING_DETAILS', value)
+                }
             }
         }
     },

@@ -109,7 +109,35 @@ export default {
         }
     },
     computed: {
+        bookingFormData: {
+            get() {
+                return {
+                    customer: this.$store.state.bookingCreateData.customer,
+                    staff:  this.$store.state.bookingCreateData.bookingDetails.staff,
+                    service: this.$store.state.bookingCreateData.bookingDetails.service,
+                    date: this.$store.state.bookingCreateData.bookingDetails.date,
+                    times: this.$store.state.bookingCreateData.bookingDetails.time,
+                }
+            }
+        },
+        disabled: {
+            get() {
+                return this.$store.state.bookingCreateData.disabled
+            },
+            set(value) {
+                this.$store.commit('SET_BOOKING_SUBMIT_DISABLED', value)
+            }
+        }
     },
+
+    watch: {
+        bookingFormData(newValue) {
+            let isValid = this.isFormValid(newValue)
+            // console.log('is form valid: '+isValid);
+            this.disabled = !isValid
+        }
+    },
+
     methods: {
         selectBookingWindow() {
             this.step = 1
@@ -138,6 +166,14 @@ export default {
             this.snackbar = true
             this.text = 'Successfully created booking'
             this.colour = 'green'
+        },
+        isFormValid(form) {
+            if((form.customer.id===undefined) || (form.staff.id===undefined) || 
+                (form.service.id===undefined) || (form.date === '') || 
+                (form.times.length === 0) ) {
+                    return false
+                } 
+                return true
         }
     }
 }

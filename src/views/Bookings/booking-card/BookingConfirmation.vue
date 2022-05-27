@@ -12,7 +12,9 @@
                 <v-checkbox v-model="notifyCustomer" :value="notifyCustomer" light label="Notify customer" color="orange"></v-checkbox>
             </v-col>
             <v-col cols="6" class="mx-auto my-3">
-                <v-btn class="mx-auto mb-4" :loading="loading" block rounded dark large color="red" @click="submitForm">Submit</v-btn>
+                <v-btn class="mx-auto mb-4" :loading="loading" block :disabled="disabled" rounded large color="red" @click="submitForm">
+                    <span :class="disabled ? 'text-gray-500' : 'text-white'">Submit</span>
+                </v-btn>
             </v-col>
         </v-row>
     </div>
@@ -21,7 +23,7 @@
 <script>
 import DetailRow from '../../../components/Booking/BookingCard/BookingConfimation/DetailRow.vue'
 // import moment from 'moment'
-// import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   components: { DetailRow },
     data() {
@@ -30,9 +32,9 @@ export default {
         }
     },
     computed: {
-        // ...mapGetters({
-        //     errors: 'getLoginFormErrors',
-        // }),
+        ...mapGetters({
+            disabled: 'getBookingSubmitIsDisabled'
+        }),
         service: {
             get() {
                 let title = this.$store.state.bookingCreateData.bookingDetails.service.title
@@ -62,11 +64,12 @@ export default {
         },
         customer: {
             get() {
-                let customer = this.$store.state.bookingCreateData.customer.full_name
-                if(customer === undefined) {
-                    return 'Not available'
+                let customer = this.$store.state.bookingCreateData.customer
+                if(customer !== undefined || customer !== null) {
+                    let customerName = this.$store.state.bookingCreateData.customer.full_name
+                    return customerName
                 }
-                return customer
+                return 'Not available'
             }
         },
         notifyCustomer: {
@@ -111,7 +114,20 @@ export default {
                 }
                 return time.reduce(function(a, b) { return a <= b? b : a;}).split(' - ')[1];
             }
-        }
+        },
+        bookingFormData: {
+            get() {
+                return {
+                    customer: this.$store.state.bookingCreateData.customer,
+                    staff:  this.$store.state.bookingCreateData.bookingDetails.staff,
+                    service: this.$store.state.bookingCreateData.bookingDetails.service,
+                    date: this.$store.state.bookingCreateData.bookingDetails.date,
+                    times: this.$store.state.bookingCreateData.bookingDetails.time,
+                    duration: this.duration,
+                    notifyCustomer: this.notifyCustomer
+                }
+            }
+        },
     },
 
     methods: {
@@ -121,23 +137,15 @@ export default {
             // dispatch action
             // clear booking form
             // disable loading
-            let bookingFormData = {
-                customer_id: this.$store.state.bookingCreateData.customer.id,
-                staff_id: this.$store.state.bookingCreateData.bookingDetails.staff.id,
-                service_id: this.$store.state.bookingCreateData.bookingDetails.service.id,
-                date: this.$store.state.bookingCreateData.bookingDetails.date,
-                times: this.$store.state.bookingCreateData.bookingDetails.time,
-                duration: this.duration,
-                notifyCustomer: this.notifyCustomer
-            }
+            
 
-            await this.$store.dispatch('saveBooking', bookingFormData)
+            await this.$store.dispatch('saveBooking', this.bookingFormData)
 
             await this.$store.dispatch('restartBooking')
 
             this.loading = false
             this.$emit('resetFormStep')
-        }
+        },
     }
 }
 </script>
