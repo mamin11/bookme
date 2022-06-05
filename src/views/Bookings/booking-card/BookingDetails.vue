@@ -120,6 +120,8 @@
 
 <script>
 import moment from 'moment'
+import axios from 'axios'
+
 export default {
     data() {
         return {
@@ -129,38 +131,7 @@ export default {
             currentDate: moment().format("YYYY-MM-DD"),
             availableDates: [],
             blockDays: [1,4, 6],
-            services: [
-                {
-                    id: 1,
-                    title: "Wedding",
-                    price: 100,
-                    duration: 2
-                },
-                {
-                    id: 2,
-                    title: "Birthday",
-                    price: 150,
-                    duration: 1
-                },
-                {
-                    id: 3,
-                    title: "Portrait",
-                    price: 50,
-                    duration: 1
-                },
-                {
-                    id: 4,
-                    title: "Engagement",
-                    price: 200,
-                    duration: 3
-                },
-                {
-                    id: 5,
-                    title: "Product",
-                    price: 80,
-                    duration: 1
-                }
-            ],
+            services: [],
             staff: [
                 {
                     id: 1,
@@ -190,6 +161,7 @@ export default {
     },
 
     mounted() {
+        this.getServices()
     },
 
     computed: {
@@ -321,6 +293,18 @@ export default {
                 arr.push(concat)
             }
             return arr
+        },
+
+        async getServices() {
+            const response = await axios.get(process.env.VUE_APP_API_URL + '/services/all', {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        // "Authorization": `Bearer ${token}`,
+                    }
+                })
+
+                console.log(response.data);
+                this.services = response.data
         }
     }
 }
