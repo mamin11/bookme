@@ -20,6 +20,7 @@ export default {
     editingUser: null,
 
     bookings: [],
+    services: [],
 
     bookingCreateData: {
         bookingDetails: {

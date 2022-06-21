@@ -156,20 +156,22 @@ export const restartBooking = ({ commit }) => {
     commit('RESTART_BOOKING')
 }
 
-export const saveBooking = ({ commit }, payload) => {
-    // try {
-    //     // get token from cookies
+export const saveBooking = async ({ commit }, payload) => {
+    try {
+        // get token from cookies
 
-    //     const response = await axios.post(process.env.VUE_APP_API_URL + '/bookings/add', {
-    //         headers: {
-    //             "Content-Type": "multipart/form-data",
-    //             "Authorization": `Bearer ${token}`,
-    //         }
-    //     })
+        const response = await axios.post(process.env.VUE_APP_API_URL + '/booking/add', payload, {
+            headers: {
+                // "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
+                // "Authorization": `Bearer ${token}`,
+            }
+        })
 
-    //     commit('SAVE_BOOKINGS', response.data.booking)
-    // } catch (error) {
-    //     console.log(error.response.data);
-    // }
-    commit('SAVE_BOOKING', payload)
+        commit('SAVE_BOOKINGS', response.data.booking)
+    } catch (error) {
+        console.log(error.response.data);
+        // commit error messages and display errors to user
+    }
+    // commit('SAVE_BOOKING', payload)
 }

@@ -42,12 +42,13 @@
             return-object
             >
             <template v-slot:selection="{ item }" class="">
-                <span class="text-black" :key="item.id" >{{ item.name }}</span>
+                <span class="text-black" :key="item.id" >{{ item.fullName }}</span>
             </template>
             <template v-slot:item="{ item }" class="">
-                <span class="text-black text-sm" :key="item.id">{{ item.name }}</span>
+                <span class="text-black text-sm" :key="item.id">{{ item.fullName }}</span>
                 <v-spacer></v-spacer>
-                <v-avatar size="36"><img :src="item.image" :alt="item.name"></v-avatar>
+                <!-- TODO: [BV-47] use initials if not image set -->
+                <v-avatar size="36"><img :src="item.image" :alt="item.fullName"></v-avatar>
             </template>
             </v-select>
         </v-col>
@@ -132,28 +133,7 @@ export default {
             availableDates: [],
             blockDays: [1,4, 6],
             services: [],
-            staff: [
-                {
-                    id: 1,
-                    name: "John Doe",
-                    image: "https://cdn.vuetifyjs.com/images/john.jpg"
-                },
-                {
-                    id: 2,
-                    name: "Lisa Revy",
-                    image: "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
-                },
-                {
-                    id: 3,
-                    name: "Allan Smith",
-                    image: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
-                },
-                {
-                    id: 4,
-                    name: "Amin Hussein",
-                    image: "https://www.gravatar.com/avatar/b17065ea1655f1e3283aac8d8fc16019?s=48&d=identicon&r=PG"
-                }
-            ],
+            staff: [],
             hourFormat: undefined, 
             locale: undefined, 
             workingHours: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00']
@@ -162,6 +142,7 @@ export default {
 
     mounted() {
         this.getServices()
+        this.getStaff()
     },
 
     computed: {
@@ -305,6 +286,18 @@ export default {
 
                 console.log(response.data);
                 this.services = response.data
+        },
+
+        async getStaff() {
+            const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff', {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    // "Authorization": `Bearer ${token}`,
+                }
+            })
+
+            console.log(response.data);
+            this.staff = response.data
         }
     }
 }

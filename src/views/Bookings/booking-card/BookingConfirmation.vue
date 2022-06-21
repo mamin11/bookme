@@ -66,7 +66,7 @@ export default {
             get() {
                 let customer = this.$store.state.bookingCreateData.customer
                 if(customer !== undefined || customer !== null) {
-                    let customerName = this.$store.state.bookingCreateData.customer.full_name
+                    let customerName = this.$store.state.bookingCreateData.customer.fullName
                     return customerName
                 }
                 return 'Not available'
@@ -118,13 +118,13 @@ export default {
         bookingFormData: {
             get() {
                 return {
-                    customer: this.$store.state.bookingCreateData.customer,
-                    staff:  this.$store.state.bookingCreateData.bookingDetails.staff,
-                    service: this.$store.state.bookingCreateData.bookingDetails.service,
-                    date: this.$store.state.bookingCreateData.bookingDetails.date,
-                    times: this.$store.state.bookingCreateData.bookingDetails.time,
-                    duration: this.duration,
-                    notifyCustomer: this.notifyCustomer
+                    customer_email: this.$store.state.bookingCreateData.customer.email,
+                    staff_email:  this.$store.state.bookingCreateData.bookingDetails.staff.email,
+                    service_id: this.$store.state.bookingCreateData.bookingDetails.service.id,
+                    booking_date: this.$store.state.bookingCreateData.bookingDetails.date,
+                    booking_slots: this.$store.state.bookingCreateData.bookingDetails.time,
+                    // duration: this.duration,
+                    notify_customer: this.notifyCustomer
                 }
             }
         },

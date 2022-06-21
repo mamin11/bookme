@@ -19,7 +19,7 @@
                     >
                         <v-list-item-content>
                         <v-list-item-title 
-                        v-text="customer.full_name"></v-list-item-title>
+                        v-text="customer.fullName"></v-list-item-title>
                         </v-list-item-content>
                         <v-list-item-action>
                             <v-list-item-action-text>{{customer.email}}</v-list-item-action-text>
@@ -35,7 +35,7 @@
                     >
                         <v-list-item-content>
                         <v-list-item-title 
-                        v-text="customer.full_name"></v-list-item-title>
+                        v-text="customer.fullName"></v-list-item-title>
                         </v-list-item-content>
                         <v-list-item-action>
                             <v-list-item-action-text>{{customer.email}}</v-list-item-action-text>
@@ -48,47 +48,23 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
     data: () => ({
-    customers: [
-        {
-            id: 1,
-            full_name: "Allan Smith",
-            email: "allansm@email.test"
-        },
-        {
-            id: 2,
-            full_name: "Lee Dixon",
-            email: "mrlee@email.test"
-        },
-        {
-            id: 3,
-            full_name: "Diego Enrique",
-            email: "denriqu1@email.test"
-        },
-        {
-            id: 4,
-            full_name: "Amin Abdi",
-            email: "amadbi@email.test"
-        },
-        {
-            id: 5,
-            full_name: "This is test",
-            email: "this@this.com"
-        },
-        {
-            id: 6,
-            full_name: "hello there",
-            email: "helloh@email.com"
-        }
-    ],
+    customers: [],
     model: ['Customers'],
     search: ''
     }),
+
+    mounted() {
+        this.getCustomers()
+    },
+
     computed: {
         searchQuery() {
             return this.customers.filter((item) => {
-                return item.full_name.toLowerCase().startsWith(this.search.toLowerCase())
+                return item.fullName.toLowerCase().startsWith(this.search.toLowerCase())
             })
         },
         booking_customer: {
@@ -107,6 +83,18 @@ export default {
     methods: {
         setSelected(customer) {
             this.booking_customer = customer
+        },
+
+        async getCustomers() {
+            const response = await axios.get(process.env.VUE_APP_API_URL + '/users/customer', {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    // "Authorization": `Bearer ${token}`,
+                }
+            })
+
+            console.log(response.data);
+            this.customers = response.data
         }
     }
 }
