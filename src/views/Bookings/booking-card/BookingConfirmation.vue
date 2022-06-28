@@ -23,18 +23,22 @@
 <script>
 import DetailRow from '../../../components/Booking/BookingCard/BookingConfimation/DetailRow.vue'
 // import moment from 'moment'
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 export default {
   components: { DetailRow },
     data() {
         return {
             loading: false,
+            disabled: true
         }
     },
+
+    updated() {
+        this.disabled = this.$store.state.bookingCreateData.disabled
+        // console.log('updated confirmation comp');
+    },
+
     computed: {
-        ...mapGetters({
-            disabled: 'getBookingSubmitIsDisabled'
-        }),
         service: {
             get() {
                 let title = this.$store.state.bookingCreateData.bookingDetails.service.title
@@ -55,7 +59,7 @@ export default {
         },
         staff: {
             get() {
-                let name = this.$store.state.bookingCreateData.bookingDetails.staff.name
+                let name = this.$store.state.bookingCreateData.bookingDetails.staff.fullName
                 if (name === undefined) {
                     return 'Not available'
                 }

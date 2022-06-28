@@ -93,7 +93,6 @@ export default {
                 }
             })
 
-            console.log(response.data);
             this.customers = response.data
         }
     }

@@ -168,7 +168,7 @@ export const saveBooking = async ({ commit }, payload) => {
             }
         })
 
-        commit('SAVE_BOOKINGS', response.data.booking)
+        commit('SAVE_BOOKING', response.data.booking)
     } catch (error) {
         console.log(error.response.data);
         // commit error messages and display errors to user

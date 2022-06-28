@@ -284,7 +284,6 @@ export default {
                     }
                 })
 
-                console.log(response.data);
                 this.services = response.data
         },
 
@@ -296,7 +295,6 @@ export default {
                 }
             })
 
-            console.log(response.data);
             this.staff = response.data
         }
     }

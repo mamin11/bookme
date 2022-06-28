@@ -132,9 +132,9 @@ export default {
 
     watch: {
         bookingFormData(newValue) {
-            let isValid = this.isFormValid(newValue)
-            // console.log('is form valid: '+isValid);
-            this.disabled = !isValid
+            let isValid = this.isFormInvalid(newValue)
+            // console.log('is form invalid: '+isValid);
+            this.disabled = isValid
         }
     },
 
@@ -167,13 +167,13 @@ export default {
             this.text = 'Successfully created booking'
             this.colour = 'green'
         },
-        isFormValid(form) {
+        isFormInvalid(form) {
             if((form.customer.id===undefined) || (form.staff.id===undefined) || 
                 (form.service.id===undefined) || (form.date === '') || 
                 (form.times.length === 0) ) {
-                    return false
+                    return true
                 } 
-                return true
+                return false
         }
     }
 }
