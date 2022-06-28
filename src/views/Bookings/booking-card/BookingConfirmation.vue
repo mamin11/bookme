@@ -38,6 +38,10 @@ export default {
         // console.log('updated confirmation comp');
     },
 
+    mounted() {
+        this.disabled = this.$store.state.bookingCreateData.disabled
+    },
+
     computed: {
         service: {
             get() {
