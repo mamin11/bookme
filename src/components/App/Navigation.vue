@@ -157,6 +157,11 @@ export default {
         },
         {
             icon: "mdi-account-group",
+            title: "Services",
+            to: "/services"
+        },
+        {
+            icon: "mdi-account-group",
             title: "Team",
             to: "/team"
         },
