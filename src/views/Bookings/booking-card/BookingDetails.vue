@@ -1,15 +1,15 @@
 <template>
     <div>
         <v-col
-            class="d-flex"
+            class="d-flex flex-col"
             cols="12"
         >
         <!-- TODO: [BV-19] create reusable component for service dropdown -->
+          <label class="text-sm">Select Service</label>
             <v-select
             :items="services"
             item-value="id"
             item-color="red"
-            label="Select service"
             color="orange lighten-1"
             dense
             v-model="booking_service"
@@ -28,14 +28,14 @@
 
 <!-- TODO: [BV-18] adopt common neat font -->
         <v-col
-            class="d-flex"
+            class="d-flex flex-col"
             cols="12"
         >
+          <label class="text-sm">Select Photographer</label>
             <v-select
             :items="staff"
             item-value="id"
             item-color="red"
-            label="Select staff"
             color="orange lighten-1"
             dense
             v-model="booking_staff"
