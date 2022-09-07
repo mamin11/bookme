@@ -1,7 +1,7 @@
 <template>
     <div class="bg-white shadow-lg rounded-sm border border-gray-200 relative">
     <header class="px-5 py-4">
-        <h2 class="font-semibold text-gray-800">All Services <span class="text-gray-400 font-medium">{{services.length}}</span></h2>
+        <h2 class="font-semibold text-gray-800">All Staff <span class="text-gray-400 font-medium">{{staff.length}}</span></h2>
     </header>
     <div>
 
@@ -13,17 +13,20 @@
             <tr>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                 </th>
-                <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                <!-- <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                     <div class="font-semibold text-left">ID</div>
+                </th> -->
+                <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                    <div class="font-semibold text-left">Name</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                    <div class="font-semibold text-left">Title</div>
+                    <div class="font-semibold text-left">Email</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                    <div class="font-semibold text-left">Minimum duration</div>
+                    <div class="font-semibold text-left">Phone</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                    <div class="font-semibold text-left">Price p/h</div>
+                    <div class="font-semibold text-left">Bookings Today</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                     <div class="font-semibold text-left"></div>
@@ -34,13 +37,13 @@
             </tr>
             </thead>
             <!-- Table body -->
-            <ServicesTableItem
-            v-for="service in services"
-            :key="service.id"
-            :service="service"
+            <TeamsTableItem
+            v-for="user in staff"
+            :key="user.id"
+            :user="user"
             v-model="selected"
-            :value="service.id"
-            @deleteItem="deleteItem(service)"
+            :value="user.id"
+            @deleteItem="deleteItem(user)"
             @showSnackBar="shownSnackBar"
             />
         </table>
@@ -52,13 +55,13 @@
 
 <script>
 
-import ServicesTableItem from './ServicesTableItem.vue'
+import TeamsTableItem from './TeamsTableItem.vue'
 import axios from "axios";
 import {Messages} from "@/Util/contants";
 
 export default {
-    name: 'ServicesTable',
-    components: {ServicesTableItem },
+    name: 'TeamsTable',
+    components: {TeamsTableItem },
 
     data: () => ({
         selectAll: false,
@@ -66,33 +69,25 @@ export default {
         message: '',
         messageType: null,
         shownToast: false,
+        staff: []
     }),
 
   mounted() {
-      this.getServices()
+      this.getStaff()
   },
 
   computed: {
-    services() {
-      return this.$store.state.services
-    }
   },
 
   methods: {
-      async deleteItem(service) {
-        await this.deleteAsync(service)
-        await this.getServices()
-        // this.services = this.$store.state.services
-        // this.services.splice(this.services.indexOf(service), 1)
-
-        // send delete request to backend
-        // remove item from array
-        // if error, add back and show snackbar
+      async deleteItem(user) {
+        await this.deleteAsync(user)
+        await this.getStaff()
       },
 
     async deleteAsync(payload) {
       try {
-        const response = await axios.delete(process.env.VUE_APP_API_URL + '/services/delete/'+payload.id, {
+        const response = await axios.delete(process.env.VUE_APP_API_URL + '/users/staff/delete/'+payload.id, {
           headers: {
             "Content-Type": "application/json",
             // "Authorization": `Bearer ${token}`,
@@ -105,8 +100,15 @@ export default {
       }
     },
 
-      async getServices() {
-        await this.$store.dispatch('getServices')
+    async getStaff() {
+          const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff', {
+              headers: {
+                  "Content-Type": "multipart/form-data",
+                  // "Authorization": `Bearer ${token}`,
+              }
+          })
+
+          this.staff = response.data
       },
 
     shownSnackBar(message, messageType) {

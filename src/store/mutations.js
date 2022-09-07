@@ -156,3 +156,8 @@ export const SET_BOOKING_SUBMIT_DISABLED = (state, data) => {
 export const SAVE_SERVICE = (state, data) => {
     state.services = data
 }
+
+export const PUSH_SERVICE = (state, data) => {
+    console.log(state, data)
+    // state.services.push(data)
+}

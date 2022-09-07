@@ -9,12 +9,10 @@
     <template v-slot:activator="{ on, attrs }">
         <div>
         <!-- Add button -->
-            <button class="btn bg-blue-500 hover:bg-blue-600 text-white" v-bind="attrs" v-on="on">
-                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span class="hidden xs:block ml-2">Add Service</span>
-            </button>   
+          <v-btn class="mx-auto btn" color="red" v-bind="attrs" v-on="on">
+            <v-icon color="white">mdi-plus</v-icon>
+            <span class="text-white xs:block ml-2 text-capitalize">Add Service</span>
+          </v-btn>
         </div>
     </template>
 
@@ -47,7 +45,7 @@
                 <small>*indicates required field</small>
                 <div class="flex flex-wrap justify-end space-x-2">
                     <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" @click="dialog = false">Cancel</button>
-                    <button class="btn-sm bg-blue-500 hover:bg-blue-600 text-white"  @click="addService">Save</button>
+                    <button class="btn-sm bg-orange-600 hover:bg-orange-500 text-white"  @click="addService">Save</button>
                 </div>
                 </div>
             <!-- </v-row> -->
@@ -59,6 +57,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import {Messages} from "@/Util/contants";
+
 export default {
     name: "ServiceForm",
 
@@ -72,21 +73,43 @@ export default {
     }),
 
     methods: {
-        addService() {
-            //validate form
+      addAsync: async function () {
 
-            //dispatch action
-            this.$store.dispatch('addService', this.formData)
-
-            //reset form
-            this.formData = {
-                title: '',
-                duration: '',
-                price: ''
+        try {
+          const response = await axios.post(process.env.VUE_APP_API_URL + '/services/add', this.formData, {
+            headers: {
+              "Content-Type": "application/json",
+              // "Authorization": `Bearer ${token}`,
             }
+          })
 
-            //close modal
-            this.dialog = false
+          this.$emit('showSnackBar', response.data.message, Messages.SUCCESS)
+        } catch (error) {
+          this.$emit('showSnackBar', error.response.data.error, Messages.ERROR)
+        }
+      },
+
+      loadServicesAsync: async function () {
+        await this.$store.dispatch('getServices')
+      },
+
+      async addService() {
+        //todo: validate form
+
+        //dispatch actions
+        await this.addAsync();
+
+        await this.loadServicesAsync();
+
+        //reset form
+        this.formData = {
+            title: '',
+            duration: '',
+            price: ''
+        }
+
+        //close modal
+        this.dialog = false
         },
     },
 

@@ -6,7 +6,7 @@
             <v-btn
             text
             v-bind="attrs"
-            @click="showSnackbar = false"
+            @click="close"
             >
             Close
             </v-btn>
@@ -15,11 +15,13 @@
 </template>
 
 <script>
+import {Messages} from "@/Util/contants";
+
 export default {
     props: {
         snackbar: Boolean,
         text: String,
-        colour: String
+        messageType: Messages
     },
     data() {
         return {
@@ -32,8 +34,19 @@ export default {
             },
             set() {
             }
-        }
-    }
+        },
+        colour() {
+          return this.messageType === Messages.ERROR ? 'red' : 'green'
+      }
+    },
+
+  methods: {
+    close() {
+        this.$emit('updateSnackbar', false)
+      // this.$destroy();
+      // this.$el.parentNode.removeChild(this.$el);
+    },
+  }
 
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <v-app >
-    <navigation></navigation>
+    <!-- <navigation></navigation> -->
     <!-- <v-main style="background-color: #121212 !important;" class="bg-gray-100"> -->
     <v-main class="bg-gray-100">
       <router-view/>
@@ -9,10 +9,10 @@
 </template>
 
 <script>
-import Navigation from './components/App/Navigation.vue'
+// import Navigation from './components/App/Navigation.vue'
 
 export default {
-  components: {Navigation},
+  // components: {Navigation},
   name: 'App',
   computed: {
     routeName() {

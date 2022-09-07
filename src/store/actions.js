@@ -176,17 +176,16 @@ export const saveBooking = async ({ commit }, payload) => {
     // commit('SAVE_BOOKING', payload)
 }
 
-export const addService = async ({ commit }, payload) => {
+export const getServices = async ({ commit }) => {
     try {
-        const response = await axios.post(process.env.VUE_APP_API_URL + '/services/add', payload, {
+        const response = await axios.get(process.env.VUE_APP_API_URL + '/services/all', {
             headers: {
-                // "Content-Type": "multipart/form-data",
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 // "Authorization": `Bearer ${token}`,
             }
         })
 
-        commit('SAVE_SERVICE', response.data.service)
+        commit('SAVE_SERVICE', response.data)
     } catch (error) {
         console.log(error.response.data)
     }

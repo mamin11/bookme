@@ -132,7 +132,6 @@ export default {
             currentDate: moment().format("YYYY-MM-DD"),
             availableDates: [],
             blockDays: [1,4, 6],
-            services: [],
             staff: [],
             hourFormat: undefined, 
             locale: undefined, 
@@ -225,6 +224,9 @@ export default {
                 return working_hours_concat.filter(arr => !this.booked_hours.includes(arr))
             }
         },
+        services() {
+          return  this.$store.state.services
+        }
     },
 
     methods: {
@@ -276,17 +278,6 @@ export default {
             return arr
         },
 
-        async getServices() {
-            const response = await axios.get(process.env.VUE_APP_API_URL + '/services/all', {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        // "Authorization": `Bearer ${token}`,
-                    }
-                })
-
-                this.services = response.data
-        },
-
         async getStaff() {
             const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff', {
                 headers: {
@@ -296,7 +287,11 @@ export default {
             })
 
             this.staff = response.data
-        }
+        },
+
+        async getServices() {
+          await this.$store.dispatch('getServices')
+        },
     }
 }
 </script>
