@@ -122,6 +122,7 @@
 <script>
 import moment from 'moment'
 import axios from 'axios'
+import {isEmptyJson} from "@/Util/helpers";
 
 export default {
     data() {
@@ -135,7 +136,9 @@ export default {
             staff: [],
             hourFormat: undefined, 
             locale: undefined, 
-            workingHours: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00']
+            requestedSlots: [],
+            workingHours: []
+            // workingHours: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00']
         }
     },
 
@@ -225,7 +228,21 @@ export default {
             }
         },
         services() {
-          return  this.$store.state.services
+            return  this.$store.state.services
+        },
+    },
+
+    watch: {
+        booking_staff(newVal) {
+            if(!isEmptyJson(this.booking_staff) && this.booking_date !== null) {
+                this.requestTimeslots(newVal.id, this.booking_date)
+            }
+        },
+
+        booking_date(newVal) {
+            if(!isEmptyJson(this.booking_staff) && this.booking_date !== null) {
+                this.requestTimeslots(this.booking_staff.id, newVal)
+            }
         }
     },
 
@@ -259,11 +276,19 @@ export default {
         },
 
         disabledH() {
-            let intArray = [12, 13, 15]
-            return intArray
+            if(this.workingHours.length > 0) {
+                let intArray = [12, 13, 15]
+                return intArray
+            } else {
+                return []
+            }
         },
         disabledM() {
-            return [45, 30]
+            if(this.workingHours.length > 0) {
+                return [45, 30]
+            } else {
+                return []
+            }
         },
         remove (item) {
             this.chips.splice(this.chips.indexOf(item), 1)
@@ -290,8 +315,23 @@ export default {
         },
 
         async getServices() {
-          await this.$store.dispatch('getServices')
+            await this.$store.dispatch('getServices')
         },
+
+        async requestTimeslots(staffId, bookingDate) {
+            console.log("staff: "+staffId+" date: "+bookingDate);
+            const response = await axios.post(process.env.VUE_APP_API_URL + '/timeslot/all', {staff_id: staffId, booking_date: "2022-09-18"}, {
+                headers: {
+                    "Content-Type": "application/json",
+                    // "Authorization": `Bearer ${token}`,
+                }
+            },
+            )
+
+            if (response.data !== null && !isEmptyJson(response.data)) {
+                this.workingHours = response.data.map((obj) => obj.bookingTime)
+            }
+        }
     }
 }
 </script>
