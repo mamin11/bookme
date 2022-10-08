@@ -145,6 +145,10 @@ export const SAVE_BOOKING = (state, data) => {
     state.bookings = data
 }
 
+export const SET_BOOKING_MESSAGE = (state, data) => {
+    state.message = data
+}
+
 export const SET_NOTIFY_CUSTOMER_IN_BOOKING_DETAILS = (state, data) => {
     state.bookingCreateData.bookingDetails.notifyCustomer = data
 }
@@ -157,7 +161,10 @@ export const SAVE_SERVICE = (state, data) => {
     state.services = data
 }
 
-export const PUSH_SERVICE = (state, data) => {
-    console.log(state, data)
-    // state.services.push(data)
+export const SAVE_STAFF= (state, data) => {
+    state.staff = data
+}
+
+export const SET_ERROR = (state, data) => {
+    state.error = data
 }

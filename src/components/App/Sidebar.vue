@@ -119,9 +119,9 @@ export default {
             to: "/customers"
         },
         {
-            icon: "mdi-head-question",
-            title: "Questions",
-            to: "/quiz"
+            icon: "mdi-wrench-clock",
+            title: "Timeslots",
+            to: "/timeslots"
         },
         {
             icon: "mdi-note-search",

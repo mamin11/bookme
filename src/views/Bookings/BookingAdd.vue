@@ -103,7 +103,6 @@ import SnackBar from '../../components/Booking/BookingCard/BookingConfimation/Sn
 import BookingConfirmation from './booking-card/BookingConfirmation.vue'
 import BookingDetails from './booking-card/BookingDetails.vue'
 import CustomerDetails from './booking-card/CustomerDetails.vue'
-import {Messages} from "@/Util/contants";
 import Sidebar from '../../components/App/Sidebar.vue';
 import Header from '../../components/App/Header.vue';
 export default {
@@ -138,6 +137,9 @@ export default {
             set(value) {
                 this.$store.commit('SET_BOOKING_SUBMIT_DISABLED', value)
             }
+        },
+        message() {
+            return this.$store.state.message
         }
     },
 
@@ -175,11 +177,11 @@ export default {
 
             //show snackbar
             this.snackbar = true
-            this.text = 'Successfully created booking'
-            this.messageType = Messages.SUCCESS
+            this.text = this.message.text === null ? 'Default message' : this.message.text
+            this.messageType = this.message.type === null ? 0 : this.message.type
         },
         isFormInvalid(form) {
-            if((form.customer.id===undefined) || (form.staff.id===undefined) || 
+            if((form.customer.userId===undefined) || (form.staff.id===undefined) || 
                 (form.service.id===undefined) || (form.date === '') || 
                 (form.times.length === 0) ) {
                     return true

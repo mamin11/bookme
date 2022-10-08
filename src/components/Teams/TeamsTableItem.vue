@@ -29,7 +29,7 @@
       <div>{{ user.phone }}</div>
     </td>
     <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-      <div class="text-left font-medium">{{ user.id }}</div>
+      <div class="text-left font-medium">{{ user.allTimeBookings }}</div>
     </td>
     <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
       <div class="inline-flex font-medium rounded-full text-center px-2.5 py-0.5">

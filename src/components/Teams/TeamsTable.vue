@@ -26,7 +26,7 @@
                     <div class="font-semibold text-left">Phone</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                    <div class="font-semibold text-left">Bookings Today</div>
+                    <div class="font-semibold text-left">Total Bookings</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                     <div class="font-semibold text-left"></div>
@@ -46,7 +46,9 @@
             @deleteItem="deleteItem(user)"
             @showSnackBar="shownSnackBar"
             />
+            <AlertModal :dialog="deleteDialog" @confirmDelete="confirmDelete" @cancelDelete="cancelDelete" />
         </table>
+
 
         </div>
     </div>
@@ -58,10 +60,11 @@
 import TeamsTableItem from './TeamsTableItem.vue'
 import axios from "axios";
 import {Messages} from "@/Util/contants";
+import AlertModal from '../../partials/alert/AlertModal.vue';
 
 export default {
     name: 'TeamsTable',
-    components: {TeamsTableItem },
+    components: { TeamsTableItem, AlertModal },
 
     data: () => ({
         selectAll: false,
@@ -69,7 +72,10 @@ export default {
         message: '',
         messageType: null,
         shownToast: false,
-        staff: []
+        deleteConfirmed: false,
+        deleteDialog: false,
+        deletingUser: null
+        // staff: []
     }),
 
   mounted() {
@@ -77,12 +83,19 @@ export default {
   },
 
   computed: {
+    staff() {
+      return this.$store.state.staff
+    }
   },
 
   methods: {
-      async deleteItem(user) {
-        await this.deleteAsync(user)
-        await this.getStaff()
+      deleteItem(user) {
+        this.deletingUser = user
+        this.deleteDialog = true
+        // if (this.deleteConfirmed) {
+        //   await this.deleteAsync(user)
+        //   await this.$store.dispatch('getStaff')
+        // }
       },
 
     async deleteAsync(payload) {
@@ -101,18 +114,21 @@ export default {
     },
 
     async getStaff() {
-          const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff', {
-              headers: {
-                  "Content-Type": "multipart/form-data",
-                  // "Authorization": `Bearer ${token}`,
-              }
-          })
-
-          this.staff = response.data
-      },
+      await this.$store.dispatch('getStaff')
+    },
 
     shownSnackBar(message, messageType) {
       this.$emit('showSnackBar', message, messageType)
+    },
+
+    async confirmDelete() {
+      await this.deleteAsync(this.deletingUser)
+      await this.$store.dispatch('getStaff')
+      this.deleteDialog = false
+    },
+    
+    cancelDelete() {
+      this.deleteDialog = false
     }
 
     }

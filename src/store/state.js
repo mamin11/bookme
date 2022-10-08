@@ -21,7 +21,15 @@ export default {
 
     bookings: [],
     services: [],
+    staff: [],
 
+    error: null,
+
+    message: {
+        text: null,
+        type: null
+    },
+    
     bookingCreateData: {
         bookingDetails: {
             service: [],
@@ -31,7 +39,7 @@ export default {
             notifyCustomer: false,
         },
         customer: {},
-        disabled: true
+        disabled: true,
     },
 
 }

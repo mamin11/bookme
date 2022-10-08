@@ -87,7 +87,7 @@
                         sm
                         hint="Which days will this staff work?"
                         persistent-hint
-                        v-model="formData.services"
+                        v-model="formData.working_days"
                         multiple
                         >
                         <template #selection="{ item }">
@@ -102,7 +102,7 @@
                 <small>*indicates required field</small>
                 <div class="flex flex-wrap justify-end space-x-2">
                     <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" @click="dialog = false">Cancel</button>
-                    <button class="btn-sm bg-orange-600 hover:bg-orange-500 text-white"  @click="addService">Save</button>
+                    <button class="btn-sm bg-orange-600 hover:bg-orange-500 text-white"  @click="addUser">Save</button>
                 </div>
                 </div>
             <!-- </v-row> -->
@@ -136,9 +136,11 @@ export default {
             firstname: '',
             lastname: '',
             email: '',
-            password: '',
             phone: '',
-            services: []
+            password: '',
+            services: [],
+            user_type: 3,
+            working_days: []
         },
         rules: [
           value => !value || value.size < 2000000 || 'Image size should be less than 2 MB!',
@@ -151,9 +153,8 @@ export default {
 
     methods: {
       addAsync: async function () {
-
         try {
-          const response = await axios.post(process.env.VUE_APP_API_URL + '/teams/add', this.formData, {
+          const response = await axios.post(process.env.VUE_APP_API_URL + '/users/staff/add', this.formData, {
             headers: {
               "Content-Type": "application/json",
               // "Authorization": `Bearer ${token}`,
@@ -166,23 +167,28 @@ export default {
         }
       },
 
-      loadServicesAsync: async function () {
-        await this.$store.dispatch('getServices')
+      loadUsersAsync: async function () {
+        await this.$store.dispatch('getStaff')
       },
 
-      async addService() {
+      async addUser() {
         //todo: validate form
 
         //dispatch actions
         await this.addAsync();
 
-        await this.loadServicesAsync();
+        await this.loadUsersAsync();
 
         //reset form
         this.formData = {
-            title: '',
-            duration: '',
-            price: ''
+            firstname: '',
+            lastname: '',
+            email: '',
+            password: '',
+            phone: '',
+            services: [],
+            user_type: 3,
+            working_days: []
         }
 
         //close modal

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {Messages} from "@/Util/contants";
 // import Vue from 'vue'
 
 export const setLayoutState = ({ commit }) => {
@@ -162,18 +163,30 @@ export const saveBooking = async ({ commit }, payload) => {
 
         const response = await axios.post(process.env.VUE_APP_API_URL + '/booking/add', payload, {
             headers: {
-                // "Content-Type": "multipart/form-data",
                 "Content-Type": "application/json",
                 // "Authorization": `Bearer ${token}`,
             }
         })
 
+        console.log(response);
         commit('SAVE_BOOKING', response.data.booking)
+        
+        let message = {
+            text: response.data.message,
+            type: Messages.SUCCESS
+        }
+
+        commit('SET_BOOKING_MESSAGE',message )
     } catch (error) {
         console.log(error.response.data);
-        // commit error messages and display errors to user
+        
+        let message = {
+            text: error.response.data.error,
+            type: Messages.ERROR
+        }
+
+        commit('SET_BOOKING_MESSAGE', message)
     }
-    // commit('SAVE_BOOKING', payload)
 }
 
 export const getServices = async ({ commit }) => {
@@ -189,4 +202,20 @@ export const getServices = async ({ commit }) => {
     } catch (error) {
         console.log(error.response.data)
     }
+}
+
+export const getStaff = async ({ commit }) => {
+    try {
+        const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff', {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                // "Authorization": `Bearer ${token}`,
+            }
+        })
+
+        commit('SAVE_STAFF', response.data)
+    } catch(error) {
+        commit('SET_ERROR', error.response.data)
+    }
+
 }
