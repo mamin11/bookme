@@ -4,34 +4,7 @@
             class="d-flex flex-col"
             cols="12"
         >
-        <!-- TODO: [BV-19] create reusable component for service dropdown -->
-          <label class="text-sm">Select Service</label>
-            <v-select
-            :items="services"
-            item-value="id"
-            item-color="red"
-            color="orange lighten-1"
-            dense
-            v-model="booking_service"
-            return-object
-            >
-            <template v-slot:selection="{ item }" class="">
-                <span class="text-black" :key="item.id" >{{ item.title }}</span>
-            </template>
-            <template v-slot:item="{ item }" class="">
-                <span class="text-black text-sm" :key="item.id">{{ item.title }}</span>
-                <v-spacer></v-spacer>
-                <span class="text-black text-sm">£{{ item.price }}/hr</span>
-            </template>
-            </v-select>
-        </v-col>
-
-<!-- TODO: [BV-18] adopt common neat font -->
-        <v-col
-            class="d-flex flex-col"
-            cols="12"
-        >
-          <label class="text-sm">Select Photographer</label>
+            <label class="text-sm">Select Photographer</label>
             <v-select
             :items="staff"
             item-value="id"
@@ -47,8 +20,34 @@
             <template v-slot:item="{ item }" class="">
                 <span class="text-black text-sm" :key="item.id">{{ item.fullName }}</span>
                 <v-spacer></v-spacer>
-                <!-- TODO: [BV-47] use initials if not image set -->
-                <v-avatar size="36"><img :src="item.image" :alt="item.fullName"></v-avatar>
+                <img v-if="item.image !== null" class="ml-1 rounded-full" :src="item.image" width="100" height="100" :alt="item.fullName" />
+                <avatar v-else color="red" :fullname="item.fullName" :size=28></avatar>
+            </template>
+            </v-select>
+        </v-col>
+
+        <v-col
+            class="d-flex flex-col"
+            cols="12"
+        >
+        <!-- TODO: [BV-19] create reusable component for service dropdown -->
+            <label class="text-sm">Select Service</label>
+            <v-select
+            :items="staffServices"
+            item-value="id"
+            item-color="red"
+            color="orange lighten-1"
+            dense
+            v-model="booking_service"
+            return-object
+            >
+            <template v-slot:selection="{ item }" class="">
+                <span class="text-black" :key="item.id" >{{ item.title }}</span>
+            </template>
+            <template v-slot:item="{ item }" class="">
+                <span class="text-black text-sm" :key="item.id">{{ item.title }}</span>
+                <v-spacer></v-spacer>
+                <span class="text-black text-sm">£{{ item.price }}/hr</span>
             </template>
             </v-select>
         </v-col>
@@ -114,6 +113,9 @@
                     <strong class="text-white font-thin text-sm">{{ item }}</strong>&nbsp;
                 </v-chip>
                 </template>
+                <template v-slot:no-data>
+                    <p class="ml-3 mt-3">Sorry, no open slots available!</p>
+                </template>
             </v-combobox>
         </v-col>
     </div>
@@ -123,8 +125,10 @@
 import moment from 'moment'
 import axios from 'axios'
 import {isEmptyJson} from "@/Util/helpers";
+import Avatar from 'vue-avatar-component'
 
 export default {
+    components: {Avatar},
     data() {
         return {
             date_modal: false,
@@ -132,7 +136,7 @@ export default {
             date: moment().format("YYYY-MM-DD"),
             currentDate: moment().format("YYYY-MM-DD"),
             availableDates: [],
-            blockDays: [1,4, 6],
+            blockDays: [],
             staff: [],
             hourFormat: undefined, 
             locale: undefined, 
@@ -145,6 +149,7 @@ export default {
     mounted() {
         this.getServices()
         this.getStaff()
+        this.$store.dispatch('restartBooking')
     },
 
     computed: {
@@ -230,12 +235,55 @@ export default {
         services() {
             return  this.$store.state.services
         },
+        // blockDays() {
+        //     if (!isEmptyJson(this.booking_staff)) {
+        //         return this.booking_staff.working_days.map(item => item)
+        //     } else {
+        //         return []
+        //     }
+        // },
+        // blockDays: {
+        //     get() {
+        //         if (!isEmptyJson(this.booking_staff)) {
+        //             return this.booking_staff.working_days.map(item => item)
+        //         } else {
+        //             return []
+        //         }
+        //     }, set(val) {
+        //         return val
+        //     }
+        // },
+        staffServices: {
+            get() {
+                if (!isEmptyJson(this.booking_staff)) {
+                    return this.services.filter(item => this.booking_staff.services.includes(item.id))
+                } else {
+                    return []
+                }
+            },
+            set(value) {
+                return value  
+            }
+        } 
     },
 
     watch: {
         booking_staff(newVal) {
-            if(!isEmptyJson(this.booking_staff) && this.booking_date !== null) {
-                this.requestTimeslots(newVal.id, this.booking_date)
+            if (!isEmptyJson(this.booking_staff)) {
+                this.staffServices =  this.services.filter(item => this.booking_staff.services.includes(item.id))
+                // console.log(this.booking_staff.working_days);
+                this.blockDays = this.booking_staff.working_days.map(item => item)
+                // this.$emit('picker-date', moment());
+                this.pickerUpdate(moment().format("YYYY-MM-DD"))
+
+                
+                // block weekends
+                // this.blockDays.push(...)
+                // this.blockDays.push(0,6)
+
+                if(this.booking_date !== null) {
+                    this.requestTimeslots(newVal.id, this.booking_date)
+                }
             }
         },
 
@@ -243,7 +291,7 @@ export default {
             if(!isEmptyJson(this.booking_staff) && this.booking_date !== null) {
                 this.requestTimeslots(this.booking_staff.id, newVal)
             }
-        }
+        },
     },
 
     methods: {
@@ -267,8 +315,9 @@ export default {
         
         for (let i = day; i <= totalDay ; i++) {
             let date = moment().month(val.split('-')[1]-1).date(i).format("YYYY-MM-DD")
-            if (!this.blockDays.includes(moment(date).day()))
-            if (moment(date).day() !== 0 && moment(date).day() !== 6)
+            // if (!this.blockDays.includes(moment(date).day()))
+
+            if (this.blockDays.includes(moment(date).day()))
                 availableDates.push(date)
         }
         this.availableDates = availableDates;
@@ -296,8 +345,10 @@ export default {
         },
         getConcatedWorkingHours(working_hours) {
             let arr = []
-            for (let i = 0; i < working_hours.length - 1; i++) {
-                const concat = working_hours[i] + ' - '+ working_hours[i+1];
+            for (let i = 0; i < working_hours.length; i++) {
+                // const concat = working_hours[i] + ' - '+ working_hours[i+1];
+                // let end = new moment(working_hours[i])
+                const concat = working_hours[i] + ' - '+ moment(working_hours[i], "HH:mm").add({hour: 1}).format('HH:mm');
                 arr.push(concat)
             }
             return arr
@@ -319,8 +370,7 @@ export default {
         },
 
         async requestTimeslots(staffId, bookingDate) {
-            console.log("staff: "+staffId+" date: "+bookingDate);
-            const response = await axios.post(process.env.VUE_APP_API_URL + '/timeslot/all', {staff_id: staffId, booking_date: "2022-09-18"}, {
+            const response = await axios.post(process.env.VUE_APP_API_URL + '/timeslot/all', {staff_id: staffId, booking_date: bookingDate}, {
                 headers: {
                     "Content-Type": "application/json",
                     // "Authorization": `Bearer ${token}`,
