@@ -158,15 +158,23 @@ export default {
     async editUser(payload) {
       // services[] initially has objects, they become array of int if dropdown selection changes
       // extract only ids
-      if (Object.keys(...payload.services).includes('title')) {
-        payload.services = payload.services.map(item => item.id)
+      if(payload.services.length > 0) {
+        if (Object.keys(...payload.services).includes('title')) {
+          payload.services = payload.services.map(item => item.id)
+        }
+      } else {
+        payload.services = this.user.services
       }
       
-      // same for work days
-      if (Object.keys(...payload.working_days).includes('value')) {
-        payload.working_days = payload.working_days.map(item => item.key)
+      if (payload.working_days.length > 0) {
+        // same for work days
+        if (Object.keys(...payload.working_days).includes('value')) {
+          payload.working_days = payload.working_days.map(item => item.key)
+        }
+        // console.log('payload: '+JSON.stringify(payload));
+      } else {
+        payload.working_days = this.user.working_days
       }
-      // console.log('payload: '+JSON.stringify(payload));
 
       try {
         const form = new FormData();

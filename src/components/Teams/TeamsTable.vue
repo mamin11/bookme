@@ -1,8 +1,5 @@
 <template>
     <div class="bg-white shadow-lg rounded-sm border border-gray-200 relative">
-    <header class="px-5 py-4">
-        <h2 class="font-semibold text-gray-800">All Staff <span class="text-gray-400 font-medium">{{staff.length}}</span></h2>
-    </header>
     <div>
 
         <!-- Table -->
