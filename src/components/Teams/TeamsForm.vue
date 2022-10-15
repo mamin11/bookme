@@ -32,6 +32,8 @@
                     accept="image/png, image/jpeg, image/bmp"
                     placeholder="Select Image"
                     label="Select Image"
+                    v-model="formData.image"
+                    show-size
                   ></v-file-input>
                   </div>
                     <div class="mb-2">
@@ -132,6 +134,7 @@ export default {
           {key: 6, value: 'Saturday'}, 
           {key: 7, value: 'Sunday'}
         ],
+        hasFile: false,
         formData: {
             firstname: '',
             lastname: '',
@@ -140,7 +143,8 @@ export default {
             password: '',
             services: [],
             user_type: 3,
-            working_days: []
+            working_days: [],
+            image: null
         },
         rules: [
           value => !value || value.size < 2000000 || 'Image size should be less than 2 MB!',
@@ -154,12 +158,25 @@ export default {
     methods: {
       addAsync: async function () {
         try {
-          const response = await axios.post(process.env.VUE_APP_API_URL + '/users/staff/add', this.formData, {
-            headers: {
-              "Content-Type": "application/json",
-              // "Authorization": `Bearer ${token}`,
-            }
-          })
+            const form = new FormData();
+              if (this.formData.image != null) {
+                form.append("image", this.formData.image)
+              }
+              form.append("firstname", this.formData.firstname)
+              form.append("lastname", this.formData.lastname)
+              form.append("email", this.formData.email)
+              form.append("phone", this.formData.phone)
+              form.append("password", this.formData.password)
+              form.append("services", this.formData.services)
+              form.append("userType", this.formData.user_type)
+              form.append("workingDays", this.formData.working_days)
+              form.append(
+                  "headers", {
+                      "Content-Type": "multipart/form-data"
+                  }
+            )
+
+          const response = await axios.post(process.env.VUE_APP_API_URL + '/users/staff/add', form)
 
           this.$emit('showSnackBar', response.data.message, Messages.SUCCESS)
         } catch (error) {

@@ -21,6 +21,8 @@
                         accept="image/png, image/jpeg, image/bmp"
                         placeholder="Select Image"
                         label="Select Image"
+                        v-model="userMapped.image"
+                        show-size
                       ></v-file-input>
                       </div>
                         <div class="mb-2">
@@ -133,6 +135,7 @@ export default {
             email: this.user.email,
             phone: this.user.phone,
             user_type: 3,
+            image: null,
             services: this.mapUserServices(this.user.services),
             working_days: this.mapUserWorkDays(this.user.working_days)
       }
@@ -166,13 +169,21 @@ export default {
       // console.log('payload: '+JSON.stringify(payload));
 
       try {
-        const response = await axios.put(process.env.VUE_APP_API_URL + '/users/staff/edit/'+this.user.id, payload, {
-          headers: {
-            // "Content-Type": "multipart/form-data",
-            "Content-Type": "application/json",
-            // "Authorization": `Bearer ${token}`,
-          }
-        })
+        const form = new FormData();
+        if (payload.image != null) {
+          form.append("image", payload.image)
+        }
+        form.append("firstname", payload.firstname)
+        form.append("lastname", payload.lastname)
+        form.append("email", payload.email)
+        form.append("phone", payload.phone)
+        form.append("password", payload.password)
+        form.append("services", payload.services)
+        form.append("userType", payload.user_type)
+        form.append("workingDays", payload.working_days)
+        form.append("headers", {"Content-Type": "multipart/form-data"})
+
+        const response = await axios.put(process.env.VUE_APP_API_URL + '/users/staff/edit/'+this.user.id, form)
 
         this.$emit('updateShowEdit')
         await this.$store.dispatch('getStaff')
