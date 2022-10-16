@@ -17,7 +17,6 @@ export const register = async ({ commit }, payload) => {
                 "Content-Type": "multipart/form-data"
             }
         })
-        // console.log(response)
         commit('SET_REGISTER_FORM_RESPONSE', response.data)
     } catch (error) {
         commit('SET_REGISTER_FORM_ERRORS', error.response.data.error)
@@ -31,14 +30,12 @@ export const login = async ({ commit }, payload) => {
                 "Content-Type": "multipart/form-data"
             }
         })
-        // console.log(response)
         let userDetails = {
             user: response.data.user,
             token: response.data.token
         }
         commit('SET_USER', userDetails)
     } catch (error) {
-        console.log('error-action', error)
         commit('SET_LOGIN_FORM_ERRORS', error.response.data.error)
     }
 }
@@ -60,10 +57,8 @@ export const forgotPassword = async ({ commit }, payload) => {
             }
         })
 
-        // console.log(response);
         commit('FORGOT_PASSWORD_RESPONSE', response.data.message)
     } catch (error) {
-        // console.log('error from action',error.response.data);
         commit('FORGOT_PASSWORD_ERROR', error.response.data.message)
     }
 }
@@ -101,21 +96,6 @@ export const clearPasswordResetResponse = ({ commit }) => {
 }
 
 //admin - manage users
-export const getUsers = async ({ commit }, token) => {
-    try {
-        const response = await axios.get(process.env.VUE_APP_API_URL + '/users', {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                "Authorization": `Bearer ${token}`,
-            }
-        })
-
-        commit('SET_USERS', response.data.users)
-    } catch (error) {
-        console.log(error.response.data);
-    }
-}
-
 export const setEditingUser = async ({ commit }, payload) => {
     commit('SET_EDITING_USER', payload)
 }
@@ -168,7 +148,6 @@ export const saveBooking = async ({ commit }, payload) => {
             }
         })
 
-        console.log(response);
         commit('SAVE_BOOKING', response.data.booking)
         
         let message = {
@@ -177,9 +156,7 @@ export const saveBooking = async ({ commit }, payload) => {
         }
 
         commit('SET_BOOKING_MESSAGE',message )
-    } catch (error) {
-        console.log(error.response.data);
-        
+    } catch (error) {        
         let message = {
             text: error.response.data.error,
             type: Messages.ERROR

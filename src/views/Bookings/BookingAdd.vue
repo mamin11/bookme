@@ -146,7 +146,6 @@ export default {
     watch: {
         bookingFormData(newValue) {
             let isValid = this.isFormInvalid(newValue)
-            // console.log('is form invalid: '+isValid);
             this.disabled = isValid
         }
     },

@@ -225,7 +225,6 @@ export default {
     methods: {
         changeLayout() {
             this.$store.dispatch('setLayoutState', this.layoutState)
-            console.log('state changed', this.layoutState)
         },
         hasSessionCheck() {
             if(this.$session.has('token')) {
@@ -248,7 +247,6 @@ export default {
             }
             })
             .then(() => {
-                // console.log(response.data.message);
                 this.$session.destroy()
                 this.$router.go('/login')
             })

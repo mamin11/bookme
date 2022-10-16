@@ -85,14 +85,6 @@ export default {
   },
 
   watch: {
-    // isEdit() {
-    //   if (this.isEdit) {
-    //     console.log('is-edit is TRUE')
-    //     this.dialog = !this.dialog
-    //   } else {
-    //     console.log('is-edit is FALSE')
-    //   }
-    // }
   }
 
 }

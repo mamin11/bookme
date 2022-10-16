@@ -191,7 +191,6 @@ export default {
             }
             })
             .then(() => {
-                // console.log(response.data.message);
                 this.$session.destroy()
                 this.$router.go('/login')
             })
