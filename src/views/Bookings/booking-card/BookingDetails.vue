@@ -20,7 +20,9 @@
             <template v-slot:item="{ item }" class="">
                 <span class="text-black text-sm" :key="item.id">{{ item.fullName }}</span>
                 <v-spacer></v-spacer>
-                <img v-if="item.image !== null" class="ml-1 rounded-full" :src="item.image" width="100" height="100" :alt="item.fullName" />
+                <v-avatar v-if="item.image !== null" size="35">
+                    <v-img class="ml-1 rounded-full" contain sm :src="item.image" :alt="item.fullName" />
+                </v-avatar>
                 <avatar v-else color="red" :fullname="item.fullName" :size=28></avatar>
             </template>
             </v-select>

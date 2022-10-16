@@ -86,7 +86,7 @@ export default {
         },
 
         async getCustomers() {
-            const response = await axios.get(process.env.VUE_APP_API_URL + '/users/customer', {
+            const response = await axios.get(process.env.VUE_APP_API_URL + '/users/customers', {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     // "Authorization": `Bearer ${token}`,
