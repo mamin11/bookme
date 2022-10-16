@@ -13,12 +13,43 @@
             </div>
 
             <!-- Right: Actions  -->
-            <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-                <TeamsForm @showSnackBar="shownSnackBar" />
+            <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-8">
+              <div v-if="maxPageSize > 1" class="flex flex-row justify-center align-middle">
+                <label class="my-auto mx-4">Page {{ pageNumber }} of {{ maxPageSize }}</label>
+                <v-select
+                  class="my-auto w-20"
+                  color="red"
+                  :items="pageNumArray"
+                  :menu-props="{ bottom: true, offsetY: true }"
+                  hide-details
+                  label="Select Page"
+                  solo
+                  dense
+                  item-color="red"
+                  v-model="pageNumber"
+
+                ></v-select>
+              </div>
+
+              <div class="flex flex-row justify-center align-middle">
+                <v-text-field
+                  prepend-inner-icon="mdi-magnify"
+                  class="my-auto"
+                  label="Search user by name"
+                  placeholder="Enter name"
+                  solo
+                  dense
+                  background-color="white"
+                  color="red"
+                  hide-details
+                ></v-text-field>
+              </div>
+
+              <TeamsForm @showSnackBar="shownSnackBar" class="my-auto align-middle" />
             </div>
         </div>
 
-        <TeamsTable @showSnackBar="shownSnackBar" />
+        <TeamsTable @showSnackBar="shownSnackBar" :pageNumber="pageNumber" />
       </div>
 
       <snack-bar
@@ -47,8 +78,23 @@ export default {
       message: '',
       messageType: null,
       shownToast: false,
-      sidebarOpen: false
+      sidebarOpen: false,
+      pageNumber: 0,
     }),
+
+    computed: {
+      maxPageSize() {
+        let staff = this.$store.state.staff
+        if (staff.length > 0) {
+          return staff[0].maxPageSize
+        } else {
+          return 0
+        }
+      },
+      pageNumArray() {
+        return [...Array(this.maxPageSize).keys()]
+      }
+    },
 
     methods: {
       shownSnackBar(message, messageType) {
@@ -65,5 +111,4 @@ export default {
 </script>
 
 <style>
-
 </style>

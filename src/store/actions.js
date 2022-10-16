@@ -204,9 +204,9 @@ export const getServices = async ({ commit }) => {
     }
 }
 
-export const getStaff = async ({ commit }) => {
+export const getStaff = async ({ commit }, pageNumber) => {
     try {
-        const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff', {
+        const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff/'+pageNumber, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 // "Authorization": `Bearer ${token}`,

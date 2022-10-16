@@ -63,6 +63,8 @@ export default {
     name: 'TeamsTable',
     components: { TeamsTableItem, AlertModal },
 
+    props: ['pageNumber'],
+
     data: () => ({
         selectAll: false,
         selected: [],
@@ -82,6 +84,12 @@ export default {
   computed: {
     staff() {
       return this.$store.state.staff
+    }
+  },
+
+  watch: {
+    pageNumber() {
+      this.getStaff()
     }
   },
 
@@ -111,7 +119,7 @@ export default {
     },
 
     async getStaff() {
-      await this.$store.dispatch('getStaff')
+      await this.$store.dispatch('getStaff', this.pageNumber)
     },
 
     shownSnackBar(message, messageType) {
