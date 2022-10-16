@@ -22,6 +22,7 @@ export default {
     bookings: [],
     services: [],
     staff: [],
+    customers: [],
 
     error: null,
 

@@ -165,6 +165,10 @@ export const SAVE_STAFF= (state, data) => {
     state.staff = data
 }
 
+export const SAVE_CUSTOMERS= (state, data) => {
+    state.customers = data
+}
+
 export const SET_ERROR = (state, data) => {
     state.error = data
 }

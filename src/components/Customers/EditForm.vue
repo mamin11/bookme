@@ -7,7 +7,7 @@
     >
     <v-card color="">
         <v-card-title>
-        <span class="headline">User Form</span>
+        <span class="headline">Customer Form</span>
         </v-card-title>
           <v-card-text>
             <v-container fluid>
@@ -50,47 +50,6 @@
                             <label class="block text-sm font-medium mb-1" for="email">Phone Number <span class="text-gray-500">*</span></label>
                             <input v-model="userMapped.phone" id="phone" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" required />
                         </div>
-                        <div class="mb-2">
-                          <label class="block text-sm font-medium mb-1" for="firstname">Services <span class="text-gray-500">*</span></label>
-                            <v-select
-                            :items="services"
-                            item-value="id"
-                            item-text="title"
-                            item-color="red"
-                            color="orange lighten-1"
-                            chips
-                            sm
-                            hint="Which services will this staff provide?"
-                            persistent-hint
-                            v-model="userMapped.services"
-                            multiple
-                            >
-                            <template #selection="{ item }">
-                              <v-chip color="red" dark>{{item.title}}</v-chip>
-                            </template>
-                            </v-select>
-                        </div>
-
-                        <div class="mb-2">
-                          <label class="block text-sm font-medium mb-1" for="firstname">Working Days <span class="text-gray-500">*</span></label>
-                            <v-select
-                            :items="workingDays"
-                            item-text="value"
-                            item-value="key"
-                            item-color="red"
-                            color="orange lighten-1"
-                            chips
-                            sm
-                            hint="Which days will this staff work?"
-                            persistent-hint
-                            v-model="userMapped.working_days"
-                            multiple
-                            >
-                            <template #selection="{ item }">
-                              <v-chip color="red" dark>{{item.value}}</v-chip>
-                            </template>
-                            </v-select>
-                        </div>
                     </div>
                     </div>
                     <!-- Modal footer -->
@@ -117,49 +76,34 @@ import Avatar from 'vue-avatar-component'
 export default {
   name: "EditForm",
 
-  props: ['user', 'showEdit'],
-
   components: {Avatar},
+
+  props: ['user', 'showEdit'],
 
   data: () => ({
     message: '',
-    services: [],
-    workingDays: [
-          {key: 1, value: 'Monday'}, 
-          {key: 2, value: 'Tuesday'}, 
-          {key: 3, value: 'Wednesday'}, 
-          {key: 4, value: 'Thursday'}, 
-          {key: 5, value: 'Friday'}, 
-          {key: 6, value: 'Saturday'}, 
-          {key: 7, value: 'Sunday'}
-    ],
     image: null,
   }),
 
-  mounted() {
-      this.getServices()
-  },
-
-  watch: {
-    image(newVal) {
-      if (newVal !== null) {
-        this.userMapped.image = null
-      }
-    }
-  },
+  mounted() {},
 
   computed: {
     userMapped() {
       return {
             firstname: this.user.firstname,
             lastname: this.user.lastname,
-            fullName: this.user.firstname + ' ' + this.user.lastname,
             email: this.user.email,
             phone: this.user.phone,
-            user_type: 3,
+            user_type: 2,
             image: this.user.image,
-            services: this.mapUserServices(this.user.services),
-            working_days: this.mapUserWorkDays(this.user.working_days)
+      }
+    }
+  },
+
+  watch: {
+    image(newVal) {
+      if (newVal !== null) {
+        this.user.image = null
       }
     }
   },
@@ -169,35 +113,7 @@ export default {
       this.$emit('updateShowEdit')
     },
 
-    mapUserServices(items) {
-      return this.services.filter(item => items.includes(item.id))
-    },
-
-    mapUserWorkDays(items) {
-      return this.workingDays.filter(item => items.includes(item.key))
-    },
-
     async editUser(payload) {
-      // services[] initially has objects, they become array of int if dropdown selection changes
-      // extract only ids
-      if(payload.services.length > 0) {
-        if (Object.keys(...payload.services).includes('title')) {
-          payload.services = payload.services.map(item => item.id)
-        }
-      } else {
-        payload.services = this.user.services
-      }
-      
-      if (payload.working_days.length > 0) {
-        // same for work days
-        if (Object.keys(...payload.working_days).includes('value')) {
-          payload.working_days = payload.working_days.map(item => item.key)
-        }
-        // console.log('payload: '+JSON.stringify(payload));
-      } else {
-        payload.working_days = this.user.working_days
-      }
-
       try {
         const form = new FormData();
         if (this.image != null) {
@@ -208,29 +124,18 @@ export default {
         form.append("email", payload.email)
         form.append("phone", payload.phone)
         form.append("password", payload.password)
-        form.append("services", payload.services)
         form.append("userType", payload.user_type)
-        form.append("workingDays", payload.working_days)
         form.append("headers", {"Content-Type": "multipart/form-data"})
 
-        const response = await axios.put(process.env.VUE_APP_API_URL + '/users/staff/edit/'+this.user.id, form)
+        const response = await axios.put(process.env.VUE_APP_API_URL + '/users/customers/edit/'+this.user.id, form)
 
         this.$emit('updateShowEdit')
-        await this.$store.dispatch('getStaff', 0)
+        await this.$store.dispatch('getCustomers', 0)
         this.$emit('showSnackBar', response.data.message, Messages.SUCCESS)
       } catch (error) {
         this.$emit('showSnackBar', error.response.data.error, Messages.ERROR)
       }
-    },
-    async getServices() {
-            const response = await axios.get(process.env.VUE_APP_API_URL + '/services/all', {
-                  headers: {
-                      "Content-Type": "multipart/form-data",
-                      // "Authorization": `Bearer ${token}`,
-                  }
-              })
-            this.services = response.data
-        },
+    }
   },
 
 }

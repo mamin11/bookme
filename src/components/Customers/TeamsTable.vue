@@ -35,7 +35,7 @@
             </thead>
             <!-- Table body -->
             <TeamsTableItem
-            v-for="user in staff"
+            v-for="user in customers"
             :key="user.id"
             :user="user"
             v-model="selected"
@@ -78,18 +78,18 @@ export default {
     }),
 
   mounted() {
-      this.getStaff()
+      this.getCustomers()
   },
 
   computed: {
-    staff() {
-      return this.$store.state.staff
+    customers() {
+      return this.$store.state.customers
     }
   },
 
   watch: {
     pageNumber() {
-      this.getStaff()
+      this.getCustomers()
     }
   },
 
@@ -97,15 +97,11 @@ export default {
       deleteItem(user) {
         this.deletingUser = user
         this.deleteDialog = true
-        // if (this.deleteConfirmed) {
-        //   await this.deleteAsync(user)
-        //   await this.$store.dispatch('getStaff')
-        // }
       },
 
     async deleteAsync(payload) {
       try {
-        const response = await axios.delete(process.env.VUE_APP_API_URL + '/users/staff/delete/'+payload.id, {
+        const response = await axios.delete(process.env.VUE_APP_API_URL + '/users/customers/delete/'+payload.id, {
           headers: {
             "Content-Type": "application/json",
             // "Authorization": `Bearer ${token}`,
@@ -118,9 +114,9 @@ export default {
       }
     },
 
-    async getStaff() {
+    async getCustomers() {
       if (this.pageNumber !== null) {
-        await this.$store.dispatch('getStaff', this.pageNumber)
+        await this.$store.dispatch('getCustomers', this.pageNumber)
       }
     },
 
@@ -130,7 +126,7 @@ export default {
 
     async confirmDelete() {
       await this.deleteAsync(this.deletingUser)
-      await this.$store.dispatch('getStaff', this.pageNumber)
+      await this.$store.dispatch('getCustomers', this.pageNumber)
       this.deleteDialog = false
     },
     

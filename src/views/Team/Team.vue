@@ -14,7 +14,7 @@
 
             <!-- Right: Actions  -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-8">
-              <div v-if="maxPageSize > 1" class="flex flex-row justify-center align-middle">
+              <div v-if="maxPageSize >= 1" class="flex flex-row justify-center align-middle">
                 <label class="my-auto mx-4">Page {{ pageNumber }} of {{ maxPageSize - 1 }}</label>
                 <v-select
                   class="my-auto w-20"
@@ -36,7 +36,7 @@
                   prepend-inner-icon="mdi-magnify"
                   class="my-auto"
                   label="Search user by name"
-                  placeholder="at least 2 letters"
+                  placeholder="enter first or last name"
                   solo
                   dense
                   background-color="white"

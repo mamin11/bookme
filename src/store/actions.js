@@ -235,3 +235,35 @@ export const searchStaff = async ({ commit }, name) => {
     }
 
 }
+
+export const getCustomers = async ({ commit }, pageNumber) => {
+    try {
+        const response = await axios.get(process.env.VUE_APP_API_URL + '/users/customers/'+pageNumber, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                // "Authorization": `Bearer ${token}`,
+            }
+        })
+
+        commit('SAVE_CUSTOMERS', response.data)
+    } catch(error) {
+        commit('SET_ERROR', error.response.data)
+    }
+
+}
+
+export const searchCustomers = async ({ commit }, name) => {
+    try {
+        const response = await axios.get(process.env.VUE_APP_API_URL + '/users/customers/search/'+name, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                // "Authorization": `Bearer ${token}`,
+            }
+        })
+
+        commit('SAVE_CUSTOMERS', response.data)
+    } catch(error) {
+        commit('SET_ERROR', error.response.data)
+    }
+
+}

@@ -11,14 +11,14 @@
         <!-- Add button -->
           <v-btn class="mx-auto btn" color="red" v-bind="attrs" v-on="on">
             <v-icon color="white">mdi-plus</v-icon>
-            <span class="text-white xs:block ml-2 text-capitalize">Add User</span>
+            <span class="text-white xs:block ml-2 text-capitalize">Add Customer</span>
           </v-btn>
         </div>
     </template>
 
     <v-card color="">
         <v-card-title>
-        <span class="headline">User Form</span>
+        <span class="headline">Customer Form</span>
         </v-card-title>
         <v-card-text>
         <v-container fluid>
@@ -56,47 +56,6 @@
                         <label class="block text-sm font-medium mb-1" for="email">Password <span class="text-gray-500">*</span></label>
                         <input v-model="formData.password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="password" required />
                     </div>
-                    <div class="mb-2">
-                      <label class="block text-sm font-medium mb-1" for="firstname">Services <span class="text-gray-500">*</span></label>
-                        <v-select
-                        :items="services"
-                        item-value="id"
-                        item-text="title"
-                        item-color="red"
-                        color="orange lighten-1"
-                        chips
-                        sm
-                        hint="Which services will this staff provide?"
-                        persistent-hint
-                        v-model="formData.services"
-                        multiple
-                        >
-                        <template #selection="{ item }">
-                          <v-chip color="red" dark>{{item.title}}</v-chip>
-                        </template>
-                        </v-select>
-                    </div>
-
-                    <div class="mb-2">
-                      <label class="block text-sm font-medium mb-1" for="firstname">Working Days <span class="text-gray-500">*</span></label>
-                        <v-select
-                        :items="workingDays"
-                        item-text="value"
-                        item-value="key"
-                        item-color="red"
-                        color="orange lighten-1"
-                        chips
-                        sm
-                        hint="Which days will this staff work?"
-                        persistent-hint
-                        v-model="formData.working_days"
-                        multiple
-                        >
-                        <template #selection="{ item }">
-                          <v-chip color="red" dark>{{item.value}}</v-chip>
-                        </template>
-                        </v-select>
-                    </div>
                 </div>
                 </div>
                 <!-- Modal footer -->
@@ -124,16 +83,6 @@ export default {
 
     data: () => ({
         dialog: false,
-        services: [],
-        workingDays: [
-          {key: 1, value: 'Monday'}, 
-          {key: 2, value: 'Tuesday'}, 
-          {key: 3, value: 'Wednesday'}, 
-          {key: 4, value: 'Thursday'}, 
-          {key: 5, value: 'Friday'}, 
-          {key: 6, value: 'Saturday'}, 
-          {key: 7, value: 'Sunday'}
-        ],
         hasFile: false,
         formData: {
             firstname: '',
@@ -141,9 +90,7 @@ export default {
             email: '',
             phone: '',
             password: '',
-            services: [],
-            user_type: 3,
-            working_days: [],
+            user_type: 2,
             image: null
         },
         rules: [
@@ -151,9 +98,7 @@ export default {
         ],
     }),
 
-    mounted() {
-      this.getServices()
-    },
+    mounted() {},
 
     methods: {
       addAsync: async function () {
@@ -167,16 +112,14 @@ export default {
               form.append("email", this.formData.email)
               form.append("phone", this.formData.phone)
               form.append("password", this.formData.password)
-              form.append("services", this.formData.services)
               form.append("userType", this.formData.user_type)
-              form.append("workingDays", this.formData.working_days)
               form.append(
                   "headers", {
                       "Content-Type": "multipart/form-data"
                   }
             )
 
-          const response = await axios.post(process.env.VUE_APP_API_URL + '/users/staff/add', form)
+          const response = await axios.post(process.env.VUE_APP_API_URL + '/users/customers/add', form)
 
           this.$emit('showSnackBar', response.data.message, Messages.SUCCESS)
         } catch (error) {
@@ -185,7 +128,7 @@ export default {
       },
 
       loadUsersAsync: async function () {
-        await this.$store.dispatch('getStaff', 0)
+        await this.$store.dispatch('getCustomers', 0)
       },
 
       async addUser() {
@@ -203,24 +146,12 @@ export default {
             email: '',
             password: '',
             phone: '',
-            services: [],
-            user_type: 3,
-            working_days: []
+            user_type: 2,
         }
 
         //close modal
         this.dialog = false
-        },
-
-        async getServices() {
-            const response = await axios.get(process.env.VUE_APP_API_URL + '/services/all', {
-                  headers: {
-                      "Content-Type": "multipart/form-data",
-                      // "Authorization": `Bearer ${token}`,
-                  }
-              })
-            this.services = response.data
-        },
+        }
     },
 
 
