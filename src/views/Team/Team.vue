@@ -15,7 +15,7 @@
             <!-- Right: Actions  -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-8">
               <div v-if="maxPageSize > 1" class="flex flex-row justify-center align-middle">
-                <label class="my-auto mx-4">Page {{ pageNumber }} of {{ maxPageSize }}</label>
+                <label class="my-auto mx-4">Page {{ pageNumber }} of {{ maxPageSize - 1 }}</label>
                 <v-select
                   class="my-auto w-20"
                   color="red"
@@ -36,12 +36,13 @@
                   prepend-inner-icon="mdi-magnify"
                   class="my-auto"
                   label="Search user by name"
-                  placeholder="Enter name"
+                  placeholder="at least 2 letters"
                   solo
                   dense
                   background-color="white"
                   color="red"
                   hide-details
+                  v-model="search"
                 ></v-text-field>
               </div>
 
@@ -69,6 +70,7 @@ import TeamsForm from '../../components/Teams/TeamsForm.vue';
 import SnackBar from "@/components/Booking/BookingCard/BookingConfimation/SnackBar";
 import Sidebar from '../../components/App/Sidebar.vue';
 import Header from '../../components/App/Header.vue';
+import axios from "axios";
 
 export default {
     components: { SnackBar, TeamsTable, TeamsForm, Sidebar, Header },
@@ -80,19 +82,29 @@ export default {
       shownToast: false,
       sidebarOpen: false,
       pageNumber: 0,
+      search: null,
+      maxPageSize: null
     }),
 
+    mounted() {
+      this.getMaxPageSize()
+    },
+
     computed: {
-      maxPageSize() {
-        let staff = this.$store.state.staff
-        if (staff.length > 0) {
-          return staff[0].maxPageSize
-        } else {
-          return 0
-        }
-      },
       pageNumArray() {
         return [...Array(this.maxPageSize).keys()]
+      }
+    },
+
+    watch: {
+      search(newVal) {
+        if (newVal !== null && newVal.length >= 2) {
+          this.pageNumber = null
+          this.$store.dispatch('searchStaff', newVal)
+        }
+      },
+      pageNumber() {
+        this.search = null
       }
     },
 
@@ -105,8 +117,13 @@ export default {
 
       updateSnackbar(status) {
         this.shownToast = status
-      }
-    },
+      },
+      async getMaxPageSize() {
+        const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff/page-size', {headers: {"Content-Type": "multipart/form-data"}})
+        this.maxPageSize = response.data
+      },
+
+    }
 }
 </script>
 

@@ -219,3 +219,19 @@ export const getStaff = async ({ commit }, pageNumber) => {
     }
 
 }
+
+export const searchStaff = async ({ commit }, name) => {
+    try {
+        const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff/search/'+name, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                // "Authorization": `Bearer ${token}`,
+            }
+        })
+
+        commit('SAVE_STAFF', response.data)
+    } catch(error) {
+        commit('SET_ERROR', error.response.data)
+    }
+
+}

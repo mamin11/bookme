@@ -119,7 +119,9 @@ export default {
     },
 
     async getStaff() {
-      await this.$store.dispatch('getStaff', this.pageNumber)
+      if (this.pageNumber !== null) {
+        await this.$store.dispatch('getStaff', this.pageNumber)
+      }
     },
 
     shownSnackBar(message, messageType) {
