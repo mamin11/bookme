@@ -125,17 +125,17 @@ export default {
         },
         {
             icon: "mdi-note-search",
-            title: "Past Papers",
-            to: "/papers"
+            title: "Files",
+            to: "/files"
         },
         {
-            icon: "mdi-map-search",
-            title: "Find tutor",
-            to: ""
+            icon: "mdi-calendar",
+            title: "Calendar",
+            to: "/calendar"
         },
         {
-            icon: "mdi-chart-box",
-            title: "Statistics",
+            icon: "mdi-cog-outline",
+            title: "Settings",
             to: ""
         },
         {
