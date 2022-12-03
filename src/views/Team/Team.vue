@@ -99,12 +99,19 @@ export default {
     watch: {
       search(newVal) {
         if (newVal !== null && newVal.length >= 2) {
+          // search user
           this.pageNumber = null
+          this.search = newVal
           this.$store.dispatch('searchStaff', newVal)
+        } else {
+          // get all staff
+          this.pageNumber = 0
         }
       },
-      pageNumber() {
-        this.search = null
+      pageNumber(newVal) {
+        if (newVal !== null) {
+          this.search = null
+        }
       }
     },
 
@@ -118,6 +125,7 @@ export default {
       updateSnackbar(status) {
         this.shownToast = status
       },
+
       async getMaxPageSize() {
         const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff/page-size', {headers: {"Content-Type": "multipart/form-data"}})
         this.maxPageSize = response.data

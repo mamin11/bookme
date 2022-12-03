@@ -99,12 +99,18 @@ export default {
     watch: {
     search(newVal) {
         if (newVal !== null && newVal.length >= 2) {
-        this.pageNumber = null
-        this.$store.dispatch('searchCustomers', newVal)
+            this.pageNumber = null
+            this.search = newVal
+            this.$store.dispatch('searchCustomers', newVal)
+        } else {
+            // get all staff
+            this.pageNumber = 0
         }
     },
-    pageNumber() {
-        this.search = null
+    pageNumber(newVal) {
+        if (newVal !== null) {
+            this.search = null
+        }
     }
     },
 
