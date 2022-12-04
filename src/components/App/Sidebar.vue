@@ -134,6 +134,21 @@ export default {
             to: "/calendar"
         },
         {
+            icon: "mdi-finance",
+            title: "Marketing",
+            to: "/marketing"
+        },
+        {
+            icon: "mdi-cart",
+            title: "Products",
+            to: "/products"
+        },
+        {
+            icon: "mdi-receipt-text",
+            title: "Invoices",
+            to: "/invoices"
+        },
+        {
             icon: "mdi-cog-outline",
             title: "Settings",
             to: ""
