@@ -124,11 +124,6 @@ export default {
             to: "/timeslots"
         },
         {
-            icon: "mdi-note-search",
-            title: "Files",
-            to: "/files"
-        },
-        {
             icon: "mdi-calendar",
             title: "Calendar",
             to: "/calendar"
@@ -137,11 +132,6 @@ export default {
             icon: "mdi-finance",
             title: "Marketing",
             to: "/marketing"
-        },
-        {
-            icon: "mdi-cart",
-            title: "Products",
-            to: "/products"
         },
         {
             icon: "mdi-receipt-text",
