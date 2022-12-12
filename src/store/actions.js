@@ -181,11 +181,11 @@ export const getServices = async ({ commit }) => {
     }
 }
 
-export const getStaff = async ({ commit }, pageNumber) => {
+export const getStaff = async ({ commit }, payload) => {
     try {
-        const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff/'+pageNumber, {
+        const response = await axios.post(process.env.VUE_APP_API_URL + '/users/staff', payload, {
             headers: {
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
                 // "Authorization": `Bearer ${token}`,
             }
         })

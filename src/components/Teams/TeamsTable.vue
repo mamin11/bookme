@@ -38,6 +38,8 @@
             v-for="user in staff"
             :key="user.id"
             :user="user"
+            :pageNumber="pageNumber"
+            :pageSize="pageSize"
             v-model="selected"
             :value="user.id"
             @deleteItem="deleteItem(user)"
@@ -63,7 +65,7 @@ export default {
     name: 'TeamsTable',
     components: { TeamsTableItem, AlertModal },
 
-    props: ['pageNumber'],
+    props: ['pageNumber', 'pageSize'],
 
     data: () => ({
         selectAll: false,
@@ -120,7 +122,7 @@ export default {
 
     async getStaff() {
       if (this.pageNumber !== null) {
-        await this.$store.dispatch('getStaff', this.pageNumber)
+        await this.$store.dispatch('getStaff', {pageNumber: this.pageNumber, pageSize: this.pageSize})
       }
     },
 

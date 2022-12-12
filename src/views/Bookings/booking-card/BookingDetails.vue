@@ -345,6 +345,7 @@ export default {
             this.chips.splice(this.chips.indexOf(item), 1)
             this.chips = [...this.chips]
         },
+        // TODO: refactor to use method in helpers.js
         getConcatedWorkingHours(working_hours) {
             let arr = []
             for (let i = 0; i < working_hours.length; i++) {

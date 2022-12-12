@@ -14,8 +14,24 @@
 
             <!-- Right: Actions  -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-8">
+              <div class="flex flex-row justify-center align-middle">
+                <label class="my-auto mx-4">List Size </label>
+                <v-select
+                  class="my-auto w-20"
+                  color="red"
+                  :items="pageSizeArray"
+                  :menu-props="{ bottom: true, offsetY: true }"
+                  hide-details
+                  label="Select Size"
+                  solo
+                  dense
+                  item-color="red"
+                  v-model="pageSize"
+                ></v-select>
+              </div>
+
               <div v-if="maxPageSize >= 1" class="flex flex-row justify-center align-middle">
-                <label class="my-auto mx-4">Page {{ pageNumber }} of {{ maxPageSize - 1 }}</label>
+                <label class="my-auto mx-4">Page </label>
                 <v-select
                   class="my-auto w-20"
                   color="red"
@@ -27,7 +43,6 @@
                   dense
                   item-color="red"
                   v-model="pageNumber"
-
                 ></v-select>
               </div>
 
@@ -46,11 +61,11 @@
                 ></v-text-field>
               </div>
 
-              <TeamsForm @showSnackBar="shownSnackBar" class="my-auto align-middle" />
+              <TeamsForm :pageNumber="pageNumber" :pageSize="pageSize" @showSnackBar="shownSnackBar" class="my-auto align-middle" />
             </div>
         </div>
 
-        <TeamsTable @showSnackBar="shownSnackBar" :pageNumber="pageNumber" />
+        <TeamsTable @showSnackBar="shownSnackBar" :pageNumber="pageNumber" :pageSize="pageSize" />
       </div>
 
       <snack-bar
@@ -82,6 +97,8 @@ export default {
       shownToast: false,
       sidebarOpen: false,
       pageNumber: 0,
+      pageSize: 10,
+      pageSizeArray: [10, 25, 50, 100],
       search: null,
       maxPageSize: null
     }),
@@ -127,7 +144,7 @@ export default {
       },
 
       async getMaxPageSize() {
-        const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff/page-size', {headers: {"Content-Type": "multipart/form-data"}})
+        const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff/page-size/'+this.pageSize, {headers: {"Content-Type": "multipart/form-data"}})
         this.maxPageSize = response.data
       },
 

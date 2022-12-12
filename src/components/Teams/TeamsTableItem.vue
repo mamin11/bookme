@@ -5,6 +5,8 @@
   <EditForm v-if="showEdit"
             :show-edit="showEdit"
             :user="user"
+            :pageNumber="pageNumber"
+            :pageSize="pageSize"
             @updateShowEdit="updateShowEdit"
             @showSnackBar="shownSnackBar"
   />
@@ -63,7 +65,7 @@ import Avatar from 'vue-avatar-component'
 export default {
   name: 'TeamssTableItem',
   components: {EditForm, Avatar},
-  props: ['user', 'value', 'selected'],
+  props: ['user', 'pageNumber', 'pageSize', 'value', 'selected'],
 
   data: () => ({
     showEdit: false,

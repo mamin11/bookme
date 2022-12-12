@@ -97,6 +97,60 @@
                         </template>
                         </v-select>
                     </div>
+
+                    <div class="mb-2">
+                      <label class="block text-sm font-medium mb-1" for="firstname">Working Hours <span class="text-gray-500">*</span></label>
+                      <v-select
+                        :items="['Default', 'Custom']"
+                        item-color="red"
+                        color="orange lighten-1"
+                        dense
+                        v-model="formData.working_hours_choice"
+                        >
+                        </v-select>
+                    </div>
+
+                    <div v-if="formData.working_hours_choice === 'Custom'">
+                      <div class="mb-2" v-for="(day, index) in formData.working_days" :key="index">
+                          <v-combobox
+                              v-model="working_hours[day]"
+                              :items="businessHours"
+                              chips
+                              color="orange"
+                              clearable
+                              :label="getWorkDayName(day) + ': Select start and end time'"
+                              multiple
+                              append-icon="mdi-clock"
+                          >
+                          <template v-slot:selection="{ item, index }">
+                              <v-chip
+                                  v-if="index === 0"
+                                  color="red"
+                                  text-color="white"
+                              >
+                                  <strong class="text-white font-thin text-sm">{{ item + ' - ' + getEndTime(day) }}</strong>&nbsp;
+                              </v-chip>
+                              </template>
+                              <!-- <template v-slot:selection="{ attrs, item, select, selected }">
+                              <v-chip
+                                  v-bind="attrs"
+                                  :input-value="selected"
+                                  close
+                                  color="red"
+                                  text-color="white"
+                                  @click="select"
+                                  @click:close="remove(item)"
+                              >
+                                  <strong class="text-white font-thin text-sm">{{ item }}</strong>&nbsp;
+                              </v-chip>
+                              </template> -->
+                              <template v-slot:no-data>
+                                  <p class="ml-3 mt-3">No data available! Be sure to select working days if not done</p>
+                              </template>
+                          </v-combobox>
+                      </div>
+                    </div>
+
                 </div>
                 </div>
                 <!-- Modal footer -->
@@ -104,7 +158,10 @@
                 <small>*indicates required field</small>
                 <div class="flex flex-wrap justify-end space-x-2">
                     <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" @click="dialog = false">Cancel</button>
-                    <button class="btn-sm bg-orange-600 hover:bg-orange-500 text-white"  @click="addUser">Save</button>
+                    <button class="btn-sm bg-orange-600 hover:bg-orange-500 text-white"  @click="addUser">
+                      <custom-spinner v-if="loading" />
+                      <span v-else >Save</span>
+                    </button>
                 </div>
                 </div>
             <!-- </v-row> -->
@@ -118,13 +175,19 @@
 <script>
 import axios from "axios";
 import {Messages} from "@/Util/contants";
+import CustomSpinner from '../Util/CustomSpinner.vue';
+// import getConcatedWorkingHours from "@/Util/helpers"
 
 export default {
+  components: { CustomSpinner },
     name: "TeamsForm",
+
+    props: ['pageNumber', 'pageSize'],
 
     data: () => ({
         dialog: false,
         services: [],
+        loading: false,
         workingDays: [
           {key: 1, value: 'Monday'}, 
           {key: 2, value: 'Tuesday'}, 
@@ -134,6 +197,7 @@ export default {
           {key: 6, value: 'Saturday'}, 
           {key: 7, value: 'Sunday'}
         ],
+        availableHours: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
         hasFile: false,
         formData: {
             firstname: '',
@@ -143,13 +207,42 @@ export default {
             password: '',
             services: [],
             user_type: 3,
-            working_days: [],
+            working_days: [], // send this as list objects [{1: ['09:00', '17:00']}] before API request
+            working_hours_choice: 'Default',
             image: null
         },
+        working_hours: [null, null, null, null, null, null, null],
         rules: [
           value => !value || value.size < 2000000 || 'Image size should be less than 2 MB!',
         ],
     }),
+
+    computed: {
+      businessHours() {
+        // this is the business hours for the tenant
+        // business hours for tenants will be stored in DB
+        return this.availableHours
+      },
+    },
+
+    watch: {
+      working_hours() {
+        // working_hours are initialised as null for the seven days
+        // then each day is updated as selected
+        // here we loop each day's hours and auto select hours in between start and end for given day
+        for (let i = 0; i < this.working_hours.length; i++) { 
+          const element = this.working_hours[i];
+          if (element !== null) {
+              let indexes = element.map(item => {
+                  return this.availableHours.indexOf(item)
+              }).sort();
+
+              this.working_hours[i] = this.availableHours.slice(indexes[0], indexes[indexes.length-1]+1)
+            }
+
+        }
+      }
+    },
 
     mounted() {
       this.getServices()
@@ -170,6 +263,15 @@ export default {
               form.append("services", this.formData.services)
               form.append("userType", this.formData.user_type)
               form.append("workingDays", this.formData.working_days)
+              form.append("workHoursChoice", this.formData.working_hours_choice)
+              let staffWorkHours = this.getWorkDayHoursArray(this.working_hours)
+              console.log(staffWorkHours);
+              for (let i = 0; i < staffWorkHours.length; i++) {
+                const element = staffWorkHours[i];
+                // form.append("workingHours["+i+"]", JSON.stringify(element))
+                form.append("workingHours["+i+"].workDay", element.workDay)
+                form.append("workingHours["+i+"].workHours", element.workHours)
+              }
               form.append(
                   "headers", {
                       "Content-Type": "multipart/form-data"
@@ -177,15 +279,31 @@ export default {
             )
 
           const response = await axios.post(process.env.VUE_APP_API_URL + '/users/staff/add', form)
+          this.loading = true
 
           this.$emit('showSnackBar', response.data.message, Messages.SUCCESS)
         } catch (error) {
+          console.log(error);
           this.$emit('showSnackBar', error.response.data.error, Messages.ERROR)
         }
       },
 
+      getWorkDayHoursArray(items) {
+        let array = []
+        for (let i = 0; i < items.length; i++) {
+          const values = items[i];
+          
+          if (values !== null) {
+            let obj = {workDay: i, workHours: values}
+            array.push(obj)
+          }
+        }
+
+        return array
+      },
+
       loadUsersAsync: async function () {
-        await this.$store.dispatch('getStaff', 0)
+        await this.$store.dispatch('getStaff', {pageNumber: this.pageNumber, pageSize: this.pageSize})
       },
 
       async addUser() {
@@ -207,9 +325,13 @@ export default {
             user_type: 3,
             working_days: []
         }
+        this.working_hours = [null, null, null, null, null, null, null]
 
         //close modal
         this.dialog = false
+
+        // reset loading
+        this.loading = false
         },
 
         async getServices() {
@@ -221,6 +343,19 @@ export default {
               })
             this.services = response.data
         },
+
+        getWorkDayName(intValue) {
+          return this.workingDays.find(x => x.key === intValue).value
+        },
+
+        getEndTime(day) {
+          let selectedDay = this.working_hours[day];
+          if (selectedDay !== null) {
+            return selectedDay[this.working_hours[day].length-1]
+          } else {
+            return ''
+          }
+        }
     },
 
 
