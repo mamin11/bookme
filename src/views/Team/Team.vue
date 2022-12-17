@@ -65,7 +65,7 @@
             </div>
         </div>
 
-        <TeamsTable @showSnackBar="shownSnackBar" :pageNumber="pageNumber" :pageSize="pageSize" />
+        <TeamsTable @showSnackBar="shownSnackBar" :pageNumber="pageNumber" :pageSize="pageSize" @updateMaxPageSize="getMaxPageSize" />
       </div>
 
       <snack-bar

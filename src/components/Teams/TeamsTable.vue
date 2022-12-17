@@ -95,6 +95,7 @@ export default {
     },
     pageSize() {
       this.getStaff()
+      this.$emit('updateMaxPageSize')
     }
   },
 
