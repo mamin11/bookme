@@ -263,7 +263,7 @@ export default {
               form.append("services", this.formData.services)
               form.append("userType", this.formData.user_type)
               form.append("workingDays", this.formData.working_days)
-              form.append("workHoursChoice", this.formData.working_hours_choice)
+              form.append("workHoursChoice", this.mapWorkHoursChoice(this.formData.working_hours_choice))
               let staffWorkHours = this.getWorkDayHoursArray(this.working_hours)
               console.log(staffWorkHours);
               for (let i = 0; i < staffWorkHours.length; i++) {
@@ -300,6 +300,10 @@ export default {
         }
 
         return array
+      },
+
+      mapWorkHoursChoice(stringVal) {
+        return stringVal === 'Custom' ? 1 : 0
       },
 
       loadUsersAsync: async function () {

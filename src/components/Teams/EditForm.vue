@@ -260,6 +260,14 @@ export default {
       this.autoFillWorkingHours()
     },
 
+    mapWorkHoursChoice(stringVal) {
+      return stringVal === 'Custom' ? 1 : 0
+    },
+
+    reverseMapWorkHoursChoice(intVal) {
+      return intVal === 1 ? 'Custom' : 'Default'
+    },
+
     autoFillWorkingHours() {
       for (let i = 0; i < this.working_hours.length; i++) { 
           const element = this.working_hours[i];
@@ -294,7 +302,7 @@ export default {
       this.userData.image = this.user.image
       this.userData.services = this.mapUserServices(this.user.services)
       this.userData.working_days = this.mapUserWorkDays(this.user.working_days)
-      this.userData.working_hours_choice = this.user.workingHoursChoice !== null ? this.user.workingHoursChoice  : 'Default'
+      this.userData.working_hours_choice = this.user.workingHoursChoice !== null ? this.reverseMapWorkHoursChoice(this.user.workingHoursChoice)  : 'Default'
     },
 
     async editUser(payload) {
@@ -331,6 +339,13 @@ export default {
         form.append("services", payload.services)
         form.append("userType", payload.user_type)
         form.append("workingDays", payload.working_days)
+        form.append("workHoursChoice", this.mapWorkHoursChoice(this.userData.working_hours_choice))
+        let staffWorkHours = this.getWorkDayHoursArray(this.working_hours)
+        for (let i = 0; i < staffWorkHours.length; i++) {
+          const element = staffWorkHours[i];
+          form.append("workingHours["+i+"].workDay", element.workDay)
+          form.append("workingHours["+i+"].workHours", element.workHours)
+        }
         form.append("headers", {"Content-Type": "multipart/form-data"})
 
         const response = await axios.put(process.env.VUE_APP_API_URL + '/users/staff/edit/'+this.user.id, form)
@@ -350,7 +365,22 @@ export default {
                   }
               })
             this.services = response.data
-        },
+    },
+
+    getWorkDayHoursArray(items) {
+      let array = []
+      for (let i = 0; i < items.length; i++) {
+        const values = items[i];
+        
+        if (values !== null) {
+          let obj = {workDay: i, workHours: values}
+          array.push(obj)
+        }
+      }
+
+      return array
+    },
+
   },
 
 }
