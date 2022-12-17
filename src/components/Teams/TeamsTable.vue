@@ -92,6 +92,9 @@ export default {
   watch: {
     pageNumber() {
       this.getStaff()
+    },
+    pageSize() {
+      this.getStaff()
     }
   },
 
