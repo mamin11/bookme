@@ -119,31 +119,6 @@ export default {
             to: "/customers"
         },
         {
-            icon: "mdi-wrench-clock",
-            title: "Timeslots",
-            to: "/timeslots"
-        },
-        {
-            icon: "mdi-calendar",
-            title: "Calendar",
-            to: "/calendar"
-        },
-        {
-            icon: "mdi-finance",
-            title: "Marketing",
-            to: "/marketing"
-        },
-        {
-            icon: "mdi-receipt-text",
-            title: "Invoices",
-            to: "/invoices"
-        },
-        {
-            icon: "mdi-cog-outline",
-            title: "Settings",
-            to: ""
-        },
-        {
             icon: "mdi-account",
             title: "Profile",
             to: "/my-account"

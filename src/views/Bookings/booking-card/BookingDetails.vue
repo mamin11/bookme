@@ -358,7 +358,7 @@ export default {
         },
 
         async getStaff() {
-            const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff', {
+            const response = await axios.get(process.env.VUE_APP_API_URL + '/users/staff/all', {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     // "Authorization": `Bearer ${token}`,
